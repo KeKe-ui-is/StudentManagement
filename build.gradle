@@ -21,6 +21,8 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	//Apache commons lang
+	implementation 'org.apache.commons:commons-lang3:3.20.0'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat-runtime'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -29,3 +31,4 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
