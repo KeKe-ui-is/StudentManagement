@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class Application {
-
+	private String name = "Enami Kouji";
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@GetMapping("/hello")
-	public String hello(){
-		return "Hello World";
+	@GetMapping("/name")
+	public String getName() {
+		return name;
+	}
 	}
 
 
 
-}
