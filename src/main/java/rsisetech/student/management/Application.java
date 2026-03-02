@@ -13,6 +13,7 @@ import rsisetech.student.management.repository.StudentRepository;
 import java.util.List;
 
 @SpringBootApplication
+@MapperScan("rsisetech.student.management")
 public class Application {
 
 	public static void main(String[] args) {
