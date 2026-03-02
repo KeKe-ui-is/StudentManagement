@@ -1,4 +1,4 @@
-package rsisetech.student.management;
+package rsisetech.student.management.data;
 
 import lombok.Getter;
 import lombok.Setter;

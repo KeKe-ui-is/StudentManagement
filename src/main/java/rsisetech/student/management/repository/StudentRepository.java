@@ -1,6 +1,8 @@
-package rsisetech.student.management;
+package rsisetech.student.management.repository;
 
 import org.apache.ibatis.annotations.*;
+import rsisetech.student.management.data.Student;
+import rsisetech.student.management.data.StudentsCourses;
 
 import java.util.List;
 
@@ -8,6 +10,9 @@ import java.util.List;
 public interface StudentRepository {
     @Select("SELECT * FROM students")
     List<Student> search();
+
+    @Select("SELECT * FROM students_courses")
+    List<StudentsCourses> searchStudentsCourses();
 
 //    @Insert("INSERT student values(#{name},#{age})")
 //    void registerStudent(String name,int age);
