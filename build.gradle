@@ -26,7 +26,10 @@ repositories {
 }
 
 dependencies {
+	//spring boot
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	//thymeleaf :4.1.0-M2などのバージョンは書かなくてよい Spring BootのBOMが勝手に決めてくれる
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	//Apache commons lang
 	implementation 'org.apache.commons:commons-lang3:3.20.0'
 	//SQLドライバ
