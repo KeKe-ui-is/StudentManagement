@@ -11,4 +11,5 @@ import java.util.List;
 public class StudentDetail {
     private Student student;
     private List<StudentsCourses> studentsCourses;
+    private String courseName;
 }
