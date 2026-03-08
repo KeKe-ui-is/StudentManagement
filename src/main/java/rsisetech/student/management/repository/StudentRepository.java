@@ -14,6 +14,16 @@ public interface StudentRepository {
     @Select("SELECT * FROM students_courses")
     List<StudentsCourses> searchStudentsCourses();
 
+    //IDの最大値を取得
+    @Select("SELECT id FROM students ORDER BY id DESC LIMIT 1")
+    String getMaxId();
+
+    @Insert("""
+            INSERT INTO students(id,name,kana_name,nickname,email,area,age,sex,remark)
+            VALUES
+            (#{id},#{name},#{kanaName},#{nickname},#{email},#{area},#{age},#{sex},#{remark})
+            """)
+    void registerStudent(Student student);
 //    @Insert("INSERT student values(#{name},#{age})")
 //    void registerStudent(String name,int age);
 //
