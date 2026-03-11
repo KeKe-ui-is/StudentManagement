@@ -60,8 +60,7 @@ public class StudentController {
         }
         //課題　新規受講生情報を登録する処理を実装
         //コース情報も一緒に登録できるように実装する　コースは単体で良い
-        service.addStudentsAndCourses(studentDetail);
-        System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
+        service.registerStudent(studentDetail.getStudent());
         return "redirect:/studentList";
     }
 }

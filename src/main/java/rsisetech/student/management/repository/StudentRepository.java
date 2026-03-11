@@ -19,10 +19,11 @@ public interface StudentRepository {
     String getMaxId();
 
     @Insert("""
-            INSERT INTO students(id,name,kana_name,nickname,email,area,age,sex,remark)
+            INSERT INTO students(name,kana_name,nickname,email,area,age,sex,remark,isDeleted)
             VALUES
-            (#{id},#{name},#{kanaName},#{nickname},#{email},#{area},#{age},#{sex},#{remark})
+            (#{name},#{kanaName},#{nickname},#{email},#{area},#{age},#{sex},#{remark},false)
             """)
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     void registerStudent(Student student);
 //    @Insert("INSERT student values(#{name},#{age})")
 //    void registerStudent(String name,int age);

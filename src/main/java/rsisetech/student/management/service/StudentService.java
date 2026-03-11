@@ -1,8 +1,8 @@
 package rsisetech.student.management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rsisetech.student.management.data.Student;
 import rsisetech.student.management.data.StudentsCourses;
 import rsisetech.student.management.domain.StudentDetail;
@@ -41,9 +41,8 @@ public class StudentService {
                 .filter(studentsCourses -> studentsCourses.getCourseName().equals("Java基礎コース"))
                 .toList();
     }
-
-    public void addStudent(Student student,String id){
-        student.setId(id);
+    @Transactional
+    public void registerStudent(Student student){
         repository.registerStudent(student);
     }
 
@@ -59,7 +58,7 @@ public class StudentService {
         String studentId = components.createId(repository.getMaxId(),'s');
         String courseId = components.createId(studentsCoursesRepository.getMaxId(),'c');
 
-        addStudent(studentDetail.getStudent(),studentId);
+        registerStudent(studentDetail.getStudent());
         addStudentCourses(studentDetail.getCourseName() ,courseId,studentId);
     }
 
