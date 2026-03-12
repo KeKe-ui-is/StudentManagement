@@ -1,14 +1,15 @@
 package rsisetech.student.management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rsisetech.student.management.data.Student;
 import rsisetech.student.management.data.StudentsCourses;
 import rsisetech.student.management.domain.StudentDetail;
 import rsisetech.student.management.repository.StudentCoursesRepository;
 import rsisetech.student.management.repository.StudentRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -41,10 +42,15 @@ public class StudentService {
                 .filter(studentsCourses -> studentsCourses.getCourseName().equals("Java基礎コース"))
                 .toList();
     }
-
-    public void addStudent(Student student,String id){
-        student.setId(id);
-        repository.registerStudent(student);
+    @Transactional
+    public void registerStudent(StudentDetail studentDetail){
+        repository.registerStudent(studentDetail.getStudent());
+        for (StudentsCourses studentsCourses: studentDetail.getStudentsCourses()){
+            studentsCourses.setStudentId(studentDetail.getStudent().getId());
+            studentsCourses.setCourseStartAt(LocalDateTime.now());
+            studentsCourses.setCourseEndAt(LocalDateTime.now().plusYears(1));
+            repository.registerStudentsCourses(studentsCourses);
+        }
     }
 
     public void addStudentCourses(String courseName,String id,String studentId){
@@ -55,12 +61,12 @@ public class StudentService {
         studentsCoursesRepository.addStudentsCourses(studentsCourses);
     }
 
-    public void addStudentsAndCourses(StudentDetail studentDetail){
-        String studentId = components.createId(repository.getMaxId(),'s');
-        String courseId = components.createId(studentsCoursesRepository.getMaxId(),'c');
-
-        addStudent(studentDetail.getStudent(),studentId);
-        addStudentCourses(studentDetail.getCourseName() ,courseId,studentId);
-    }
+//    public void addStudentsAndCourses(StudentDetail studentDetail){
+//        String studentId = components.createId(repository.getMaxId(),'s');
+//        String courseId = components.createId(studentsCoursesRepository.getMaxId(),'c');
+//
+//        registerStudent(studentDetail.getStudent());
+//        addStudentCourses(studentDetail.getCourseName() ,courseId,studentId);
+//    }
 
 }
