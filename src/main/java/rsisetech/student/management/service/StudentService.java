@@ -9,6 +9,7 @@ import rsisetech.student.management.domain.StudentDetail;
 import rsisetech.student.management.repository.StudentCoursesRepository;
 import rsisetech.student.management.repository.StudentRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -42,8 +43,14 @@ public class StudentService {
                 .toList();
     }
     @Transactional
-    public void registerStudent(Student student){
-        repository.registerStudent(student);
+    public void registerStudent(StudentDetail studentDetail){
+        repository.registerStudent(studentDetail.getStudent());
+        for (StudentsCourses studentsCourses: studentDetail.getStudentsCourses()){
+            studentsCourses.setStudentId(studentDetail.getStudent().getId());
+            studentsCourses.setCourseStartAt(LocalDateTime.now());
+            studentsCourses.setCourseEndAt(LocalDateTime.now().plusYears(1));
+            repository.registerStudentsCourses(studentsCourses);
+        }
     }
 
     public void addStudentCourses(String courseName,String id,String studentId){
@@ -54,12 +61,12 @@ public class StudentService {
         studentsCoursesRepository.addStudentsCourses(studentsCourses);
     }
 
-    public void addStudentsAndCourses(StudentDetail studentDetail){
-        String studentId = components.createId(repository.getMaxId(),'s');
-        String courseId = components.createId(studentsCoursesRepository.getMaxId(),'c');
-
-        registerStudent(studentDetail.getStudent());
-        addStudentCourses(studentDetail.getCourseName() ,courseId,studentId);
-    }
+//    public void addStudentsAndCourses(StudentDetail studentDetail){
+//        String studentId = components.createId(repository.getMaxId(),'s');
+//        String courseId = components.createId(studentsCoursesRepository.getMaxId(),'c');
+//
+//        registerStudent(studentDetail.getStudent());
+//        addStudentCourses(studentDetail.getCourseName() ,courseId,studentId);
+//    }
 
 }

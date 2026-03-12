@@ -15,6 +15,7 @@ import rsisetech.student.management.domain.StudentDetail;
 import rsisetech.student.management.service.StudentService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +50,9 @@ public class StudentController {
 
     @GetMapping("/newStudent")
     public String newStudent(Model model) {
-        model.addAttribute("studentDetail", new StudentDetail());
+        StudentDetail studentDetail = new StudentDetail();
+        studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+        model.addAttribute("studentDetail", studentDetail);
         return "registerStudent";
     }
 
@@ -60,7 +63,7 @@ public class StudentController {
         }
         //課題　新規受講生情報を登録する処理を実装
         //コース情報も一緒に登録できるように実装する　コースは単体で良い
-        service.registerStudent(studentDetail.getStudent());
+        service.registerStudent(studentDetail);
         return "redirect:/studentList";
     }
 }

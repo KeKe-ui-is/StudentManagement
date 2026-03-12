@@ -36,12 +36,12 @@
         <input type="text" id="sex" th:field="*{student.sex}"  />
     </div>
     <div>
-        <label for="courseName">コース名</label>
-        <input type="text" id="courseName" th:field="*{courseName}" required />
-    </div>
-    <div>
         <label for="remark">備考</label>
         <input type="text" id="remark" th:field="*{student.remark}"  />
+    </div>
+    <div th:each="course, stat : *{studentsCourses}">
+        <label for="courseName" th:for="studentsCourse.__${stat.index}__.courseName">受講コース名：</label>
+        <input type="text" id="courseName" th:id="studentCourse.__${stat.index}__.courseName" th:field="*{studentsCourses[__${stat.index}__].courseName}" />
     </div>
 
     <div>
