@@ -1,6 +1,7 @@
 package rsisetech.student.management.repository;
 
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import rsisetech.student.management.data.StudentsCourses;
@@ -18,4 +19,13 @@ public interface StudentCoursesRepository {
      */
     @Select("SELECT * FROM students_courses")
     List<StudentsCourses> search();
+
+    @Select("SELECT id FROM students_courses ORDER BY id DESC LIMIT 1")
+    String getMaxId();
+
+    @Insert("""
+            INSERT INTO students_courses(id,student_id,course_name,course_start_at,course_end_at)
+            VALUES(#{id},#{studentId},#{courseName},#{courseStartAt},#{courseEndAt})
+            """)
+    void addStudentsCourses(StudentsCourses studentsCourses);
 }

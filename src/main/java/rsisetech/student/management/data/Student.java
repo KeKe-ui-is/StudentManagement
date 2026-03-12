@@ -17,5 +17,4 @@ public class Student {
     //24課題下の2種類のフィールドに対応するレコードをStudentsテーブルに追加　追加はALTER TABLEを使う
     private String remark;
     private boolean isDeleted;
-
 }
