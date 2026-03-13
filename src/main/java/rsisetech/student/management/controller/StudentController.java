@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import rsisetech.student.management.controller.converter.StudentConverter;
 import rsisetech.student.management.data.Student;
 import rsisetech.student.management.data.StudentsCourses;
@@ -39,6 +36,15 @@ public class StudentController {
         model.addAttribute("studentList", converter.convertStudentDetails(students, studentsCourses));
         return "studentList";
         //return のstudentListは返すhtmlファイルの名前 その前のはそのhtmlファイルの中に入っている${studentList}のこと
+    }
+    //生徒単体の情報を表示
+    @GetMapping("/showStudent")
+    public String getStudent(@RequestParam int id, Model model){
+        Student student = service.searchStudent(id);
+        List<StudentsCourses> studentsCourses = service.searchStudentsCoursesList();
+        StudentDetail studentDetail = converter.convertStudentDetail(student,studentsCourses);
+        model.addAttribute("onlyStudent",studentDetail);
+        return  "onlyStudent";
     }
 
 

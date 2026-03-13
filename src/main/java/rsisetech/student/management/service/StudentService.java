@@ -36,7 +36,10 @@ public class StudentService {
     public List<StudentsCourses> searchStudentsCoursesList(){
         return repository.searchStudentsCourses();
     }
-
+    //idを指定してstudentsテーブルからそのidの受講生情報を取得
+    public Student searchStudent(int id){
+        return repository.searchStudent(id);
+    }
     public List<StudentsCourses> searchStudentsCoursesNameJava(){
         return repository.searchStudentsCourses().stream()
                 .filter(studentsCourses -> studentsCourses.getCourseName().equals("Java基礎コース"))

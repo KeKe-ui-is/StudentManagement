@@ -19,6 +19,10 @@ public interface StudentRepository {
     @Select("SELECT id FROM students ORDER BY id DESC LIMIT 1")
     String getMaxId();
 
+    //idを指定してStudentを取得
+    @Select("SELECT * FROM students WHERE id=#{id}")
+    Student searchStudent(int id);
+
     @Insert("""
             INSERT INTO students(name,kana_name,nickname,email,area,age,sex,remark,isDeleted)
             VALUES
