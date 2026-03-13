@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import rsisetech.student.management.controller.converter.StudentConverter;
 import rsisetech.student.management.data.Student;
 import rsisetech.student.management.data.StudentsCourses;
@@ -40,6 +37,18 @@ public class StudentController {
         return "studentList";
         //return のstudentListは返すhtmlファイルの名前 その前のはそのhtmlファイルの中に入っている${studentList}のこと
     }
+    //生徒単体の情報を表示
+    @GetMapping("/showStudent")
+    public String getStudent(@RequestParam int id, Model model){
+        Student student = service.searchStudent(id);
+        List<StudentsCourses> studentsCourses = service.searchStudentsCoursesList();
+        StudentDetail studentDetail = converter.convertStudentDetail(student,studentsCourses);
+        model.addAttribute("onlyStudent",studentDetail);
+        return  "onlyStudent";
+    }
+
+    //受講生の更新
+
 
 
     @GetMapping("/studentsCoursesList")
@@ -55,7 +64,7 @@ public class StudentController {
         model.addAttribute("studentDetail", studentDetail);
         return "registerStudent";
     }
-
+//受講生情報の新規登録
     @PostMapping("/registerStudent")
     public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
         if(result.hasErrors()){
@@ -65,6 +74,16 @@ public class StudentController {
         //コース情報も一緒に登録できるように実装する　コースは単体で良い
         service.registerStudent(studentDetail);
         return "redirect:/studentList";
+    }
+//    受講生情報の更新
+    @PostMapping("/updateStudent")
+    public String updateStudent(@ModelAttribute StudentDetail studentDetail ,BindingResult result){
+        if (result.hasErrors()){
+            return "updateStudent";
+        }
+        //更新処理
+        service.updateStudent(studentDetail.getStudent());
+        return "redirect:showStudent?id=" + studentDetail.getStudent().getId();
     }
 }
 

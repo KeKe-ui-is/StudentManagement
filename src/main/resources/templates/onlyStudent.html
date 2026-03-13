@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>受講生の情報</title>
+</head>
+<body>
+<h1>受講生のデータ</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>名前</th>
+    <th>カナ名</th>
+    <th>ニックネーム</th>
+    <th>メールアドレス</th>
+    <th>地域</th>
+    <th>年齢</th>
+    <th>性別</th>
+    <th>備考</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td th:text="${onlyStudent.student.id}">1</td>
+    <td th:text="${onlyStudent.student.name}">山田太郎</td>
+    <td th:text="${onlyStudent.student.kanaName}">ヤマダタロウ</td>
+    <td th:text="${onlyStudent.student.nickname}">タロー</td>
+    <td th:text="${onlyStudent.student.email}">taro@example.com</td>
+    <td th:text="${onlyStudent.student.area}">東京</td>
+    <td th:text="${onlyStudent.student.age}">20</td>
+    <td th:text="${onlyStudent.student.sex}">男性</td>
+    <td th:text="${onlyStudent.student.remark}">特になし</td>
+  </tr>
+  </tbody>
+</table>
+<!--受講コースの情報-->
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>コース名</th>
+    <th>受講開始日</th>
+    <th>修了予定日</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="course : ${onlyStudent.studentsCourses}">
+    <td th:text="${course.id}">1</td>
+    <td th:text="${course.courseName}">ほげコース</td>
+    <td th:text="${course.courseStartAt}">2000-01-01 00:00:00</td>
+    <td th:text="${course.courseEndAt}">2001-01-01 00:00:00</td>
+  </tr>
+  </tbody>
+</table>
+
+<div><a th:href="@{/studentList}">戻る</a></div>
+<h2>受講性情報の更新</h2>
+<form th:action="@{/updateStudent(id=${onlyStudent.student.id})}" th:object="${onlyStudent}" method="post">
+  <div>
+    <input type="hidden" th:field="*{student.id}">
+  </div>
+  <div>
+    <label for="name">名前</label>
+    <input type="text" id="name" th:field="*{student.name}">
+  </div>
+  <div>
+    <label for="kana_name">カナ名</label>
+    <input type="text" id="kana_name" th:field="*{student.kanaName}" required />
+  </div>
+  <div>
+    <label for="nickname">ニックネーム</label>
+    <input type="text" id="nickname" th:field="*{student.nickname}" required />
+  </div>
+  <div>
+    <label for="email">Eメール</label>
+    <input type="text" id="email" th:field="*{student.email}" required />
+  </div>
+  <div>
+    <label for="area">地域</label>
+    <input type="text" id="area" th:field="*{student.area}" required />
+  </div>
+  <div>
+    <label for="age">年齢</label>
+    <input type="number" id="age" th:field="*{student.age}"  />
+  </div>
+  <div>
+    <label for="sex">性別</label>
+    <input type="text" id="sex" th:field="*{student.sex}"  />
+  </div>
+  <div>
+    <label for="remark">備考</label>
+    <input type="text" id="remark" th:field="*{student.remark}"  />
+  </div>
+  <div>
+    <button type="submit">更新する</button>
+  </div>
+</form>
+</body>
+</html>

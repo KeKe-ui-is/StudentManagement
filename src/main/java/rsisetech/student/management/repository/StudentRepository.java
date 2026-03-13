@@ -19,6 +19,10 @@ public interface StudentRepository {
     @Select("SELECT id FROM students ORDER BY id DESC LIMIT 1")
     String getMaxId();
 
+    //idを指定してStudentを取得
+    @Select("SELECT * FROM students WHERE id=#{id}")
+    Student searchStudent(int id);
+
     @Insert("""
             INSERT INTO students(name,kana_name,nickname,email,area,age,sex,remark,isDeleted)
             VALUES
@@ -32,6 +36,13 @@ public interface StudentRepository {
     VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})
     """)
     void registerStudentsCourses(StudentsCourses studentsCourses);
+
+    @Update("""
+            UPDATE students
+            SET name=#{name}, kana_name=#{kanaName},nickname=#{nickname}, email=#{email}, area=#{area}, age=#{age}, sex=#{sex}, remark=#{remark}
+            WHERE id=#{id}
+            """)
+    void updateStudent(Student student);
 //    @Insert("INSERT student values(#{name},#{age})")
 //    void registerStudent(String name,int age);
 //
