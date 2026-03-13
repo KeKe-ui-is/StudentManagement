@@ -40,6 +40,7 @@ public class StudentService {
     public Student searchStudent(int id){
         return repository.searchStudent(id);
     }
+
     public List<StudentsCourses> searchStudentsCoursesNameJava(){
         return repository.searchStudentsCourses().stream()
                 .filter(studentsCourses -> studentsCourses.getCourseName().equals("Java基礎コース"))
@@ -54,6 +55,11 @@ public class StudentService {
             studentsCourses.setCourseEndAt(LocalDateTime.now().plusYears(1));
             repository.registerStudentsCourses(studentsCourses);
         }
+    }
+
+    @Transactional
+    public void updateStudent(Student student){
+        repository.updateStudent(student);
     }
 
     public void addStudentCourses(String courseName,String id,String studentId){

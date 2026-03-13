@@ -47,6 +47,9 @@ public class StudentController {
         return  "onlyStudent";
     }
 
+    //受講生の更新
+
+
 
     @GetMapping("/studentsCoursesList")
     public List<StudentsCourses> getStudentsCourses() {
@@ -61,7 +64,7 @@ public class StudentController {
         model.addAttribute("studentDetail", studentDetail);
         return "registerStudent";
     }
-
+//受講生情報の新規登録
     @PostMapping("/registerStudent")
     public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
         if(result.hasErrors()){
@@ -71,6 +74,16 @@ public class StudentController {
         //コース情報も一緒に登録できるように実装する　コースは単体で良い
         service.registerStudent(studentDetail);
         return "redirect:/studentList";
+    }
+//    受講生情報の更新
+    @PostMapping("/updateStudent")
+    public String updateStudent(@ModelAttribute StudentDetail studentDetail ,BindingResult result){
+        if (result.hasErrors()){
+            return "updateStudent";
+        }
+        //更新処理
+        service.updateStudent(studentDetail.getStudent());
+        return "redirect:showStudent?id=" + studentDetail.getStudent().getId();
     }
 }
 
