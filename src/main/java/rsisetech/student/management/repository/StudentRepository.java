@@ -21,7 +21,10 @@ public interface StudentRepository {
 
     //idを指定してStudentを取得
     @Select("SELECT * FROM students WHERE id=#{id}")
-    Student searchStudent(int id);
+    Student searchStudent(String id);
+    //コース情報の取得
+    @Select("SELECT * FROM students_courses WHERE student_id=#{id}")
+    List<StudentsCourses> searchStudentCourse(String id);
 
     @Insert("""
             INSERT INTO students(name,kana_name,nickname,email,area,age,sex,remark,isDeleted)
@@ -39,10 +42,18 @@ public interface StudentRepository {
 
     @Update("""
             UPDATE students
-            SET name=#{name}, kana_name=#{kanaName},nickname=#{nickname}, email=#{email}, area=#{area}, age=#{age}, sex=#{sex}, remark=#{remark}
+            SET name=#{name}, kana_name=#{kanaName},nickname=#{nickname}, email=#{email}, area=#{area}, age=#{age}, sex=#{sex}, remark=#{remark},isDeleted=#{isDeleted}
             WHERE id=#{id}
             """)
     void updateStudent(Student student);
+
+    @Update("""
+            UPDATE students_courses
+            SET course_name=#{courseName}
+            WHERE student_id=#{studentId}
+            AND id=#{id}
+            """)
+    void updateStudentCourses(StudentsCourses studentsCourses);
 //    @Insert("INSERT student values(#{name},#{age})")
 //    void registerStudent(String name,int age);
 //

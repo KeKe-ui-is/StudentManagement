@@ -37,8 +37,13 @@ public class StudentService {
         return repository.searchStudentsCourses();
     }
     //idを指定してstudentsテーブルからそのidの受講生情報を取得
-    public Student searchStudent(int id){
-        return repository.searchStudent(id);
+    public StudentDetail searchStudent(String id){
+        Student student= repository.searchStudent(id);
+        List<StudentsCourses> studentsCourses = repository.searchStudentCourse(student.getId());
+        StudentDetail studentDetail = new StudentDetail();
+        studentDetail.setStudent(student);
+        studentDetail.setStudentsCourses(studentsCourses);
+        return studentDetail;
     }
 
     public List<StudentsCourses> searchStudentsCoursesNameJava(){
@@ -58,8 +63,12 @@ public class StudentService {
     }
 
     @Transactional
-    public void updateStudent(Student student){
-        repository.updateStudent(student);
+    public void updateStudent(StudentDetail studentDetail){
+        repository.updateStudent(studentDetail.getStudent());
+        for (StudentsCourses studentsCourses : studentDetail.getStudentsCourses()){
+            studentsCourses.setStudentId(studentDetail.getStudent().getId());
+            repository.updateStudentCourses(studentsCourses);
+        }
     }
 
     public void addStudentCourses(String courseName,String id,String studentId){
