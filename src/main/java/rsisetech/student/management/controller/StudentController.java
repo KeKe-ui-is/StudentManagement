@@ -38,11 +38,11 @@ public class StudentController {
         //return のstudentListは返すhtmlファイルの名前 その前のはそのhtmlファイルの中に入っている${studentList}のこと
     }
     //生徒単体の情報を表示
-    @GetMapping("/showStudent")
-    public String getStudent(@RequestParam int id, Model model){
-        Student student = service.searchStudent(id);
-        List<StudentsCourses> studentsCourses = service.searchStudentsCoursesList();
-        StudentDetail studentDetail = converter.convertStudentDetail(student,studentsCourses);
+    @GetMapping("/student/{id}")
+    public String getStudent(@PathVariable String id, Model model){
+        StudentDetail studentDetail = service.searchStudent(id);
+//        List<StudentsCourses> studentsCourses = service.searchStudentsCoursesList();
+//        StudentDetail studentDetail = converter.convertStudentDetail(student,studentsCourses);
         model.addAttribute("onlyStudent",studentDetail);
         return  "onlyStudent";
     }
@@ -82,8 +82,8 @@ public class StudentController {
             return "updateStudent";
         }
         //更新処理
-        service.updateStudent(studentDetail.getStudent());
-        return "redirect:showStudent?id=" + studentDetail.getStudent().getId();
+        service.updateStudent(studentDetail);
+        return "redirect:studentList";
     }
 }
 

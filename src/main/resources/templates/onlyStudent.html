@@ -56,9 +56,10 @@
 
 <div><a th:href="@{/studentList}">戻る</a></div>
 <h2>受講性情報の更新</h2>
-<form th:action="@{/updateStudent(id=${onlyStudent.student.id})}" th:object="${onlyStudent}" method="post">
+<form th:action="@{/updateStudent}" th:object="${onlyStudent}" method="post">
   <div>
-    <input type="hidden" th:field="*{student.id}">
+    <label for="id">ID</label>
+    <input id="id" type="hidden" th:field="*{student.id}">
   </div>
   <div>
     <label for="name">名前</label>
@@ -91,6 +92,16 @@
   <div>
     <label for="remark">備考</label>
     <input type="text" id="remark" th:field="*{student.remark}"  />
+  </div>
+  <div th:each="course,stat: *{studentsCourses}" >
+    <div>
+      <label for="studentId" th:for="studentsCourse.__${stat.index}__.id"></label>
+      <input type="hidden" id="studentId" th:id="studentsCourses.__${stat.index}__.id" th:field="*{studentsCourses[__${stat.index}__].id}">
+    </div>
+    <div>
+      <label for="courseName" th:for="studentsCourse.__${stat.index}__.courseName">受講コース名:</label>
+      <input type="text" id="courseName" th:id="studentsCourses.__${stat.index}__.courseName" th:field="*{studentsCourses[__${stat.index}__].courseName}" />
+    </div>
   </div>
   <div>
     <button type="submit">更新する</button>
