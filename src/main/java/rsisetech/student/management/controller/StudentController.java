@@ -1,6 +1,7 @@
 package rsisetech.student.management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class StudentController {
 
     private StudentService service;
@@ -29,13 +30,10 @@ public class StudentController {
     }
 
     @GetMapping("/studentList")
-    public String getStudentList(Model model) {
+    public List<StudentDetail> getStudentList() {
         List<Student> students = service.searchStudentList();
         List<StudentsCourses> studentsCourses = service.searchStudentsCoursesList();
-
-        model.addAttribute("studentList", converter.convertStudentDetails(students, studentsCourses));
-        return "studentList";
-        //return のstudentListは返すhtmlファイルの名前 その前のはそのhtmlファイルの中に入っている${studentList}のこと
+        return converter.convertStudentDetails(students, studentsCourses);
     }
     //生徒単体の情報を表示
     @GetMapping("/student/{id}")
@@ -46,10 +44,6 @@ public class StudentController {
         model.addAttribute("onlyStudent",studentDetail);
         return  "onlyStudent";
     }
-
-    //受講生の更新
-
-
 
     @GetMapping("/studentsCoursesList")
     public List<StudentsCourses> getStudentsCourses() {
@@ -77,13 +71,10 @@ public class StudentController {
     }
 //    受講生情報の更新
     @PostMapping("/updateStudent")
-    public String updateStudent(@ModelAttribute StudentDetail studentDetail ,BindingResult result){
-        if (result.hasErrors()){
-            return "updateStudent";
-        }
+    public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail){
         //更新処理
         service.updateStudent(studentDetail);
-        return "redirect:studentList";
+        return ResponseEntity.ok("更新処理が成功しました。");
     }
 }
 
