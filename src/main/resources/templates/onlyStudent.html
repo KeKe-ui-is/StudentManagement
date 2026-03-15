@@ -45,7 +45,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="course : ${onlyStudent.studentsCourses}">
+  <tr th:each="course : ${onlyStudent.studentsCours}">
     <td th:text="${course.id}">1</td>
     <td th:text="${course.courseName}">ほげコース</td>
     <td th:text="${course.courseStartAt}">2000-01-01 00:00:00</td>
@@ -98,14 +98,14 @@
     <label for="deleted">isDeleted</label>
     <input id="deleted" type="checkbox"  th:field="*{student.deleted}">
   </div>
-  <div th:each="course,stat: *{studentsCourses}" >
+  <div th:each="course,stat: *{studentsCours}" >
     <div>
       <label for="studentId" th:for="studentsCourse.__${stat.index}__.id"></label>
-      <input type="hidden" id="studentId" th:id="studentsCourses.__${stat.index}__.id" th:field="*{studentsCourses[__${stat.index}__].id}">
+      <input type="hidden" id="studentId" th:id="studentsCours.__${stat.index}__.id" th:field="*{studentsCours[__${stat.index}__].id}">
     </div>
     <div>
       <label for="courseName" th:for="studentsCourse.__${stat.index}__.courseName">受講コース名:</label>
-      <input type="text" id="courseName" th:id="studentsCourses.__${stat.index}__.courseName" th:field="*{studentsCourses[__${stat.index}__].courseName}" />
+      <input type="text" id="courseName" th:id="studentsCours.__${stat.index}__.courseName" th:field="*{studentsCours[__${stat.index}__].courseName}" />
     </div>
   </div>
   <div>
