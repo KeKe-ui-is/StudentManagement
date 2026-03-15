@@ -2,75 +2,67 @@ package rsisetech.student.management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import rsisetech.student.management.controller.converter.StudentConverter;
-import rsisetech.student.management.data.Student;
-import rsisetech.student.management.data.StudentsCourses;
 import rsisetech.student.management.domain.StudentDetail;
 import rsisetech.student.management.service.StudentService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * 受講生の検索や登録、更新などを行うREST APIとして実行されるControllerです。
+ */
 @RestController
 public class StudentController {
 
     private StudentService service;
-    private StudentConverter converter;
 
+    /**
+     * コンストラクタ
+     */
     @Autowired
-    public StudentController(StudentService service, StudentConverter converter) {
+    public StudentController(StudentService service) {
         this.service = service;
-        this.converter = converter;
     }
 
+    /**
+     * 受講生詳細一覧検索機能です。
+     * 全件検索を行うので条件指定は不要です。
+     * 以上の受付を行うControllerです。
+     * @return 受講生詳細一覧（全件数）
+     */
     @GetMapping("/studentList")
     public List<StudentDetail> getStudentList() {
-        List<Student> students = service.searchStudentList();
-        List<StudentsCourses> studentsCourses = service.searchStudentsCoursesList();
-        return converter.convertStudentDetails(students, studentsCourses);
+        return service.searchStudentList();
     }
-    //生徒単体の情報を表示
+
+    /**
+     * 受講生検索です。
+     * idに紐づく受講生と受講コースの情報を取得します。
+     * @param id 受講生ID
+     * @return 受講生情報とそれに紐づく受講コース情報
+     */
     @GetMapping("/student/{id}")
-    public String getStudent(@PathVariable String id, Model model){
-        StudentDetail studentDetail = service.searchStudent(id);
-//        List<StudentsCourses> studentsCourses = service.searchStudentsCoursesList();
-//        StudentDetail studentDetail = converter.convertStudentDetail(student,studentsCourses);
-        model.addAttribute("onlyStudent",studentDetail);
-        return  "onlyStudent";
+    public StudentDetail getStudent(@PathVariable String id){
+        return service.searchStudent(id);
     }
 
-    @GetMapping("/studentsCoursesList")
-    public List<StudentsCourses> getStudentsCourses() {
-        return service.searchStudentsCoursesList();
-    }
-
-
-    @GetMapping("/newStudent")
-    public String newStudent(Model model) {
-        StudentDetail studentDetail = new StudentDetail();
-        studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
-        model.addAttribute("studentDetail", studentDetail);
-        return "registerStudent";
-    }
-//受講生情報の新規登録
+    /**
+     * 受講生詳細の登録を行います。
+     * 受講生と受講生コース情報を個別に登録し、受講生コース情報には受講生コースと紐づけるための値を設定
+     * 受講生コース情報にあ紐づける値や開始日修了予定日などの日付情報を設定
+     * @param studentDetail　受講生詳細
+     * @return 実行結果
+     */
     @PostMapping("/registerStudent")
-    public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
-        if(result.hasErrors()){
-            return "registerStudent";
-        }
-        //課題　新規受講生情報を登録する処理を実装
-        //コース情報も一緒に登録できるように実装する　コースは単体で良い
+    public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
         service.registerStudent(studentDetail);
-        return "redirect:/studentList";
+        return ResponseEntity.ok(studentDetail);
     }
-//    受講生情報の更新
-    @PostMapping("/updateStudent")
+    /**
+     * 受講生詳細の更新を行う。キャンセルフラグの更新もここで行います（論理削除）
+     * @param studentDetail 受講生詳細
+     */
+    @PutMapping("/updateStudent")
     public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail){
         //更新処理
         service.updateStudent(studentDetail);
