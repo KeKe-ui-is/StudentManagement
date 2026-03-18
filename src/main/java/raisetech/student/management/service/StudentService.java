@@ -1,13 +1,13 @@
-package rsisetech.student.management.service;
+package raisetech.student.management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import rsisetech.student.management.controller.converter.StudentConverter;
-import rsisetech.student.management.data.Student;
-import rsisetech.student.management.data.StudentCourse;
-import rsisetech.student.management.domain.StudentDetail;
-import rsisetech.student.management.repository.StudentRepository;
+import raisetech.student.management.controller.converter.StudentConverter;
+import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.domain.StudentDetail;
+import raisetech.student.management.repository.StudentRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
