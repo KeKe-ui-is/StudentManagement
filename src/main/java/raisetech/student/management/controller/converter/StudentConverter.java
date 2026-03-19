@@ -1,9 +1,9 @@
-package rsisetech.student.management.controller.converter;
+package raisetech.student.management.controller.converter;
 
 import org.springframework.stereotype.Component;
-import rsisetech.student.management.data.Student;
-import rsisetech.student.management.data.StudentCourse;
-import rsisetech.student.management.domain.StudentDetail;
+import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.domain.StudentDetail;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,12 @@
-package rsisetech.student.management.domain;
+package raisetech.student.management.domain;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import rsisetech.student.management.data.Student;
-import rsisetech.student.management.data.StudentCourse;
+import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentCourse;
 
 import java.util.List;
 @Getter
@@ -13,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentDetail {
+    @Valid
     private Student student;
+    @Valid
     private List<StudentCourse> studentCourseList;
 }

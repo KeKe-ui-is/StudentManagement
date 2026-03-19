@@ -1,4 +1,4 @@
-package rsisetech.student.management.service;
+package raisetech.student.management.service;
 
 import org.springframework.stereotype.Component;
 
