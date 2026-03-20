@@ -9,6 +9,7 @@ import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentCourse;
 
 import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
