@@ -11,17 +11,17 @@ import lombok.Setter;
      */
     public class Student {
         private String id;
-        @Size(min = 1,max = 50)
+        @Size(min = 1,max = 50) @NotBlank(message = "{student.name.required}")
         private String name;
-        @Size(min = 1,max = 50) @NotNull
+        @Size(min = 1,max = 50) @NotBlank(message = "{student.kanaName.required}")
         private String kanaName;
-        @Size(min = 1,max = 50) @NotNull
+        @Size(min = 1,max = 50) @NotBlank
         private String nickname;
-        @Size(min = 1,max = 50) @Email
+        @Size(min = 1,max = 50 ) @Email(message = "{student.email.invalid}") @Size(max = 50) @NotBlank(message = "{student.email.required}")
         private String email;
         @Size(min = 1,max = 50)
         private String area;
-        @Min(value = 0) @Max(value = 100)
+        @Min(value = 0,message = "{student.age.min}") @Max(value = 100, message = "{student.age.max}")
         private int age;
         @Size(min = 1,max = 10)
         private String sex;
