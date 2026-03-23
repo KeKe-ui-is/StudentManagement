@@ -163,9 +163,6 @@ class StudentServiceTest {
         Mockito.verify(repository, Mockito.times(1)).searchStudent(id);
         Mockito.verify(repository, Mockito.never()).searchStudentCourse(Mockito.any());
 
-
-        System.out.println("例外クラス: " + e.getClass().getName());
-        System.out.println("メッセージ: " + e.getMessage());
     }
 
 
@@ -281,37 +278,4 @@ class StudentServiceTest {
 
     }
 
-//    @Test
-//    void 受講生コース情報の初期化_id_開始日_修了予定日の処理が呼び出されているか() {
-//        /**
-//         *      元のコード
-//         *     public void initStudentsCourses(Student student, StudentCourse studentCourse) {
-//         *         LocalDateTime now = LocalDateTime.now();
-//         *         studentCourse.setStudentId(student.getId());
-//         *         studentCourse.setCourseStartAt(now);
-//         *         studentCourse.setCourseEndAt(now.plusYears(1));
-//         *     }
-//         */
-////        事前準備
-//        Student student = new Student();
-//        student.setId("999");
-//
-//        LocalDateTime now = LocalDateTime.now();
-//        StudentCourse studentCourse = new StudentCourse();
-//        studentCourse.setCourseStartAt(now);
-//        studentCourse.setCourseEndAt(now);
-////        実行
-//        sut.initStudentsCourses(student,studentCourse);
-////        検証
-//        Assertions.assertEquals(student.getId(),studentCourse.getStudentId());
-//
-//        Assertions.assertEquals(now.getYear(),studentCourse.getCourseStartAt().getYear());
-//        Assertions.assertEquals(now.getMonth(),studentCourse.getCourseStartAt().getMonth());
-//        Assertions.assertEquals(now.getDayOfMonth(),studentCourse.getCourseStartAt().getDayOfMonth());
-//
-//        Assertions.assertEquals(now.plusYears(1).getYear(),studentCourse.getCourseEndAt().getYear());
-//        Assertions.assertEquals(now.getMonth(),studentCourse.getCourseEndAt().getMonth());
-//        Assertions.assertEquals(now.getDayOfMonth(),studentCourse.getCourseEndAt().getDayOfMonth());
-//
-//    }
 }
