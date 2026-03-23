@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Schema(description = "受講生コース情報")
 @Getter
 @Setter
+
 public class StudentCourse {
     @Schema(description = "受講コースID", example = "1")
     private String id;
