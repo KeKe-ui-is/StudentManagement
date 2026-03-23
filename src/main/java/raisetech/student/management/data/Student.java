@@ -41,7 +41,7 @@ public class Student {
     private String area;
     // 年齢
     @Schema(description = "年齢", example = "30")
-    @NotNull
+    @NotNull(message = "{student.age.required}")
     @Min(value = 0, message = "{student.age.min}")
     @Max(value = 100, message = "{student.age.max}")
     private Integer age;
