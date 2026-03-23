@@ -2,7 +2,9 @@ package raisetech.student.management.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /*
@@ -41,10 +43,9 @@ public class Student {
     private String area;
     // 年齢
     @Schema(description = "年齢", example = "30")
-    @NotNull(message = "{student.age.required}")
     @Min(value = 0, message = "{student.age.min}")
     @Max(value = 100, message = "{student.age.max}")
-    private Integer age;
+    private int age;
     // 性別
     @Schema(description = "性別", example = "男性")
     @Size(min = 1, max = 10, message = "{student.sex.size}")
