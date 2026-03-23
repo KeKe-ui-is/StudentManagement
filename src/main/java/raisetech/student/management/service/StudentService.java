@@ -83,7 +83,7 @@ public class StudentService {
      * @param student 受講生情報
      * @param studentCourse　受講生コース
      */
-    private void initStudentsCourses(Student student, StudentCourse studentCourse) {
+    public void initStudentsCourses(Student student, StudentCourse studentCourse) {
         LocalDateTime now = LocalDateTime.now();
         studentCourse.setStudentId(student.getId());
         studentCourse.setCourseStartAt(now);
