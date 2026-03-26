@@ -210,6 +210,33 @@ class StudentControllerTest {
     }
 
     @Test
+    void 受講生詳細情報の登録時に不正な値を送ると400エラーが返ること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/registerStudent")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "student" : {
+                                    "id" : "999",
+                                    "name" : "",
+                                    "kanaName" : "テストタロウ",
+                                    "nickname" : "てす",
+                                    "email" : "test@example.jp",
+                                    "age" : 20
+                                },
+                                "studentCourseList" : [
+                                    {
+                                        "studentId" : "999",
+                                        "courseName" : "Javaフルコース"
+                                    }
+                                ]
+                            }
+                            """))
+                .andExpect(status().isBadRequest());
+
+        verify(service, never()).registerStudent(any(StudentDetail.class));
+    }
+
+    @Test
     void 受講生更新処理が実行できレスポンスエンティティが返ってくるか() throws Exception {
         /**
          *     @PutMapping("/updateStudent")
@@ -244,5 +271,32 @@ class StudentControllerTest {
                 .andExpect(content().string("更新処理が成功しました。"));
 
         verify(service, times(1)).updateStudent(any(StudentDetail.class));
+    }
+
+    @Test
+    void 受講生更新時に不正な値を送ると400エラーが返ること() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateStudent")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "student" : {
+                                    "id" : "999",
+                                    "name" : "テスト太郎",
+                                    "kanaName" : "テストタロウ",
+                                    "nickname" : "てす",
+                                    "email" : "abc",
+                                    "age" : 20
+                                },
+                                "studentCourseList" : [
+                                    {
+                                        "studentId" : "999",
+                                        "courseName" : "Javaフルコース"
+                                    }
+                                ]
+                            }
+                            """))
+                .andExpect(status().isBadRequest());
+
+        verify(service, never()).updateStudent(any(StudentDetail.class));
     }
 }
