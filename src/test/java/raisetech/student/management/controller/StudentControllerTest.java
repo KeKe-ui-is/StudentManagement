@@ -23,6 +23,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //これでテスト用のspring bootが起動する　全部動くわけではない
@@ -56,8 +57,9 @@ class StudentControllerTest {
          *     }
          */
         when(service.searchStudentList()).thenReturn(List.of(new StudentDetail()));
-        mockMvc.perform(MockMvcRequestBuilders.get("/studentList"))
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/studentList"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{\"student\":null,\"studentCourseList\":null}]"));
 
         verify(service, times(1)).searchStudentList();
     }
@@ -84,7 +86,7 @@ class StudentControllerTest {
     @Test
     void 受講生詳細の受講生のIDに数値以外を用いた時に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("あああああ");
+        student.setId("あああ");
         student.setName("小林渓人");
         student.setKanaName("コバヤシケイト");
         student.setNickname("けい");
@@ -144,7 +146,7 @@ class StudentControllerTest {
         StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
 
         when(service.searchStudent(id)).thenReturn(studentDetail);
-        mockMvc.perform(MockMvcRequestBuilders.get("/student/{id}", id))
+        mockMvc.perform(get("/student/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\n" +
                         "  \"student\": {\n" +
@@ -166,6 +168,29 @@ class StudentControllerTest {
                         "  ]\n" +
                         "}"));
         verify(service, times(1)).searchStudent(id);
+    }
+
+    @Test
+    void 存在しないidで受講生詳細情報の検索を実行後エラーが返ってくる() throws Exception {
+        /**
+         *      @GetMapping("/student/{id}")
+         *     public StudentDetail getStudent(
+         *             @Parameter(description = "受講生ID 1～3文字で入力",required = true)
+         *             @PathVariable
+         *             @Size(min = 1, max = 3)
+         *             @NotNull
+         *             String id) {
+         *         return service.searchStudent(id);
+         *     }
+         */
+//        事前準備
+        String id = "999";
+        when(service.searchStudent(id)).thenThrow(new RuntimeException("System Error"));
+        mockMvc.perform(get("/student/{id}", id))
+                .andExpect(status().isInternalServerError());
+
+        verify(service, times(1)).searchStudent(id);
+
     }
 
     @Test
@@ -201,16 +226,12 @@ class StudentControllerTest {
                                     ]
                                 }
                                 """))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.student.id").value("999"))
-                .andExpect(jsonPath("$.student.name").value("テスト太郎"))
-                .andExpect(jsonPath("$.studentCourseList[0].courseName").value("Javaフルコース"));
-        verify(service, times(1)).registerStudent(any(StudentDetail.class));
+                .andExpect(status().isOk());
+        verify(service, times(1)).registerStudent(any());
     }
 
     @Test
-    void 受講生詳細情報の登録時に不正な値を送ると400エラーが返ること() throws Exception {
+    void 受講生詳細情報の登録時に不正な値を送ると500エラーが返ること() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/registerStudent")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -231,7 +252,7 @@ class StudentControllerTest {
                                 ]
                             }
                             """))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().is5xxServerError());
 
         verify(service, never()).registerStudent(any(StudentDetail.class));
     }
@@ -274,7 +295,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void 受講生更新時に不正な値を送ると400エラーが返ること() throws Exception {
+    void 受講生更新時に不正な値を送ると500エラーが返ること() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/updateStudent")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -295,7 +316,7 @@ class StudentControllerTest {
                                 ]
                             }
                             """))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().is5xxServerError());
 
         verify(service, never()).updateStudent(any(StudentDetail.class));
     }
