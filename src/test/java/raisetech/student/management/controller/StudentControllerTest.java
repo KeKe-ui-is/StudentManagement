@@ -6,6 +6,7 @@ import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -19,6 +20,7 @@ import raisetech.student.management.service.StudentService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,6 +34,9 @@ class StudentControllerTest {
     //    MockMvcこれはspring bootが用意しているMockの仕組み Mockitではない　基本的には入れる
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    private MessageSource messageSource;
 
     //    Spring BootではMock化の仕組みが違う StudentControllerが@WebMvcTestに渡されると
 //    インスタンス生成されてしまう。
@@ -94,9 +99,15 @@ class StudentControllerTest {
         student.setAge(22);
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
-
+//violationsからエラーになっているであろうidの部分を取り出す失敗したらエラーを出す
+        ConstraintViolation<Student> idViolation = violations.stream()
+                .filter(v -> v.getPropertyPath().toString().equals("id"))
+                .findFirst()
+                .orElseThrow();
+//
+        assertThat(idViolation.getPropertyPath().toString()).isEqualTo("id");
+        assertThat(idViolation.getMessageTemplate()).isEqualTo("{student.id.pattern}");
         assertThat(violations.size()).isEqualTo(1);
-        assertThat(violations).extracting("message").containsOnly("数字のみ入力してください");
     }
 
     @Test
@@ -111,10 +122,15 @@ class StudentControllerTest {
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
+        ConstraintViolation<Student> ageViolation = violations.stream()
+                .filter(v -> v.getPropertyPath().toString().equals("age"))
+                .findFirst()
+                .orElseThrow();
+
+        assertThat(ageViolation.getPropertyPath().toString()).isEqualTo("age");
+        assertThat(ageViolation.getMessageTemplate()).isEqualTo("{student.age.min}");
         assertThat(violations.size()).isEqualTo(1);
-        assertThat(violations)
-                .extracting(ConstraintViolation::getMessage)
-                .containsOnly("{student.age.min}");
+
     }
 
 
@@ -171,7 +187,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void 存在しないidで受講生詳細情報の検索を実行後エラーが返ってくる() throws Exception {
+    void 値が大きすぎるidで受講生詳細情報の検索を実行後エラーが返ってくる() throws Exception {
         /**
          *      @GetMapping("/student/{id}")
          *     public StudentDetail getStudent(
@@ -184,12 +200,33 @@ class StudentControllerTest {
          *     }
          */
 //        事前準備
-        String id = "999";
-        when(service.searchStudent(id)).thenThrow(new RuntimeException("System Error"));
+        String id = "9999";
         mockMvc.perform(get("/student/{id}", id))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isBadRequest());
 
-        verify(service, times(1)).searchStudent(id);
+        verify(service, never()).searchStudent(id);
+
+    }
+
+    @Test
+    void 不正な形式のidで受講生詳細情報の検索を実行後エラーが返ってくる() throws Exception {
+        /**
+         *      @GetMapping("/student/{id}")
+         *     public StudentDetail getStudent(
+         *             @Parameter(description = "受講生ID 1～3文字で入力",required = true)
+         *             @PathVariable
+         *             @Size(min = 1, max = 3)
+         *             @NotNull
+         *             String id) {
+         *         return service.searchStudent(id);
+         *     }
+         */
+//        事前準備
+        String id = "aaa";
+        mockMvc.perform(get("/student/{id}", id))
+                .andExpect(status().isBadRequest());
+
+        verify(service, never()).searchStudent(id);
 
     }
 
@@ -231,7 +268,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void 受講生詳細情報の登録時に不正な値を送ると500エラーが返ること() throws Exception {
+    void 受講生詳細情報の登録時に不正な値を送ると400エラーが返ること() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/registerStudent")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -252,7 +289,7 @@ class StudentControllerTest {
                                 ]
                             }
                             """))
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().is4xxClientError());
 
         verify(service, never()).registerStudent(any(StudentDetail.class));
     }
@@ -295,7 +332,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void 受講生更新時に不正な値を送ると500エラーが返ること() throws Exception {
+    void 受講生更新時に不正な値を送ると400エラーが返ること() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/updateStudent")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -316,7 +353,7 @@ class StudentControllerTest {
                                 ]
                             }
                             """))
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().is4xxClientError());
 
         verify(service, never()).updateStudent(any(StudentDetail.class));
     }
