@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.exception.TestException;
+import raisetech.student.management.exception.ViolationErrorResponse;
 import raisetech.student.management.service.StudentService;
 
 import java.util.List;
@@ -53,8 +54,8 @@ public class StudentController {
             tags = {"SearchStudent"}
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200",description = "検索成功"),
-            @ApiResponse(responseCode = "500",description = "サーバー内部エラー")
+            @ApiResponse(responseCode = "200", description = "検索成功"),
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー")
     })
     @GetMapping("/studentList")
     public List<StudentDetail> getStudentList() {
@@ -75,15 +76,20 @@ public class StudentController {
             tags = {"SearchStudent"}
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200",description = "検索成功"),
-            @ApiResponse(responseCode = "500",description = "サーバー内部エラー")
+            @ApiResponse(responseCode = "200", description = "検索成功"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "入力チェックエラー",
+                    content = @Content(schema = @Schema(implementation = ViolationErrorResponse.class))
+            ),
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー")
     })
     @GetMapping("/student/{id}")
     public StudentDetail getStudent(
-            @Parameter(description = "受講生ID 1～3文字で入力",required = true)
+            @Parameter(description = "受講生ID 1～3文字で入力", required = true)
             @PathVariable
             @NotBlank(message = "{student.id.required}")
-            @Size(min = 1, max = 3,message = "{student.id.size}")
+            @Size(min = 1, max = 3, message = "{student.id.size}")
             @Pattern(regexp = "^\\d+$", message = "{student.id.pattern}")
             @NotNull
             String id) {
@@ -111,7 +117,8 @@ public class StudentController {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "入力値が不正です"
+                    description = "入力値が不正です",
+                    content = @Content(schema = @Schema(implementation = ViolationErrorResponse.class))
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -142,7 +149,8 @@ public class StudentController {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "入力値が不正です"
+                    description = "入力値が不正です",
+                    content = @Content(schema = @Schema(implementation = ViolationErrorResponse.class))
             ),
             @ApiResponse(
                     responseCode = "500",

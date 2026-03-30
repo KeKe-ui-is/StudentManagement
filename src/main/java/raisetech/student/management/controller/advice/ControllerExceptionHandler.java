@@ -21,8 +21,6 @@ import java.util.*;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
-    private Object c;
-
     @ExceptionHandler(TestException.class)
     public ResponseEntity<String> handleTestException(TestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ControllerException:Test Error " + "Controller:" + ex.getMessage());
@@ -104,7 +102,7 @@ public class ControllerExceptionHandler {
             }
         }
         if (lastNode.isEmpty()){
-            lastNode =" ";
+            lastNode =propertyPath.toString();
         }
         return lastNode;
     }
