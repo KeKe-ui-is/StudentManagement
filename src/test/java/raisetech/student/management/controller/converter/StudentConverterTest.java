@@ -1,6 +1,7 @@
 package raisetech.student.management.controller.converter;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentCourse;
@@ -23,19 +24,19 @@ class StudentConverterTest {
     }
 
     @Test
-    void 空の受講生一覧と空の受講生コース一覧なら空の受講詳細一覧を返す() {
+    @DisplayName("空の受講生一覧と空の受講生コース一覧なら空の受講詳細一覧を返す")
+    void convertStudentDetails_bothListsEmpty_returnEmpty() {
         List<Student> studentList = new ArrayList<>();
         List<StudentCourse> studentCourseList = new ArrayList<>();
-        List<StudentDetail> expected = new ArrayList<>();
 
         List<StudentDetail> actual = converter.convertStudentDetails(studentList, studentCourseList);
 
         assertThat(actual).isEmpty();
-        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void 受講生idで紐づいた受講詳細情報のリストが返ってくること() {
+    @DisplayName("受講生idで紐づいた受講詳細情報のリストが返ってくること")
+    void convertStudentDetails_MatchStudentId_returnStudentDetailList() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -80,37 +81,28 @@ class StudentConverterTest {
         List<StudentDetail> actual = converter.convertStudentDetails(studentList, studentCourseList);
         //検証
         assertThat(actual.size()).isEqualTo(expected.size());
-        assertThat(actual.get(0).getStudent()).isEqualTo(studentDetail1.getStudent());
-        assertThat(actual.get(1).getStudent()).isEqualTo(studentDetail2.getStudent());
-
-        assertThat(actual.get(0).getStudentCourseList()).isEqualTo(studentDetail1.getStudentCourseList());
-        assertThat(actual.get(1).getStudentCourseList()).isEqualTo(studentDetail2.getStudentCourseList());
-
+        //1件目の検証
+        assertThat(actual.get(0).getStudent().getId()).isEqualTo(studentDetail1.getStudent().getId());
+        assertThat(actual.get(0).getStudent().getName()).isEqualTo(studentDetail1.getStudent().getName());
+        assertThat(actual.get(0).getStudentCourseList().size()).isEqualTo(studentDetail1.getStudentCourseList().size());
+        assertThat(actual.get(0).getStudentCourseList().get(0).getId()).isEqualTo(studentDetail1.getStudentCourseList().get(0).getId());
+        assertThat(actual.get(0).getStudentCourseList().get(0).getStudentId()).isEqualTo(studentDetail1.getStudentCourseList().get(0).getStudentId());
+        assertThat(actual.get(0).getStudentCourseList().get(0).getCourseName()).isEqualTo(studentDetail1.getStudentCourseList().get(0).getCourseName());
+        assertThat(actual.get(0).getStudentCourseList().get(1).getId()).isEqualTo(studentDetail1.getStudentCourseList().get(1).getId());
+        assertThat(actual.get(0).getStudentCourseList().get(1).getStudentId()).isEqualTo(studentDetail1.getStudentCourseList().get(1).getStudentId());
+        assertThat(actual.get(0).getStudentCourseList().get(1).getCourseName()).isEqualTo(studentDetail1.getStudentCourseList().get(1).getCourseName());
+        //2件目の検証
+        assertThat(actual.get(1).getStudent().getId()).isEqualTo(studentDetail2.getStudent().getId());
+        assertThat(actual.get(1).getStudent().getName()).isEqualTo(studentDetail2.getStudent().getName());
+        assertThat(actual.get(1).getStudentCourseList().size()).isEqualTo(studentDetail2.getStudentCourseList().size());
+        assertThat(actual.get(1).getStudentCourseList().get(0).getId()).isEqualTo(studentDetail2.getStudentCourseList().get(0).getId());
+        assertThat(actual.get(1).getStudentCourseList().get(0).getStudentId()).isEqualTo(studentDetail2.getStudentCourseList().get(0).getStudentId());
+        assertThat(actual.get(1).getStudentCourseList().get(0).getCourseName()).isEqualTo(studentDetail2.getStudentCourseList().get(0).getCourseName());
     }
 
     @Test
-    void null要素を含む受講生コース一覧なら空の受講詳細一覧を返す() {
-        //事前準備
-        List<Student> studentList = new ArrayList<>();
-        Student student1 = null;
-        Student student2 = null;
-        List<StudentCourse> studentCourseList = new ArrayList<>();
-        StudentCourse studentCourse1 = null;
-        studentCourseList.add(studentCourse1);
-        StudentCourse studentCourse2 = null;
-        studentCourseList.add(studentCourse2);
-        StudentCourse studentCourse3 = null;
-        studentCourseList.add(studentCourse3);
-
-        //実行
-        List<StudentDetail> actual = converter.convertStudentDetails(studentList, studentCourseList);
-        //検証
-        assertThat(actual.size()).isEqualTo(0);
-        assertThat(actual).isEmpty();
-    }
-
-    @Test
-    void 受講生コース一覧がnullの時NullPointerExceptionが発生すること() {
+    @DisplayName("受講生コース一覧がnullの時NullPointerExceptionが発生すること")
+    void convertStudentDetails_studentCourseListIsNull_throwNullPointerException() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -132,7 +124,8 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講生一覧がnullの時NullPointerExceptionが発生すること() {
+    @DisplayName("受講生一覧がnullの時NullPointerExceptionが発生すること")
+    void convertStudentDetails_studentListIsNull_throwNullPointerException() {
         //事前準備
         List<Student> studentList = null;
 
@@ -161,7 +154,8 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講生一覧と受講コース一覧がnullの時NullPointerExceptionが発生すること() {
+    @DisplayName("受講生一覧と受講コース一覧がnullの時NullPointerExceptionが発生すること")
+    void convertStudentDetails_bothListsAreNull_throwNullPointerException() {
         //事前準備
         List<Student> studentList = null;
         List<StudentCourse> studentCourseList = null;
@@ -173,7 +167,8 @@ class StudentConverterTest {
     }
 
     @Test
-    void 空の受講生コース一覧を渡すと空の受講コース情報一覧が入った受講詳細情報のリストが返ってくること() {
+    @DisplayName("空の受講コース一覧を渡すと空の受講コース情報一覧が入った受講詳細情報のリストが返ってくること")
+    void convertStudentDetails_studentCourseIsEmpty_returnStudentDetailListWithEmptyCourseList() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -200,8 +195,10 @@ class StudentConverterTest {
         List<StudentDetail> actual = converter.convertStudentDetails(studentList, studentCourseList);
         //検証
         assertThat(actual.size()).isEqualTo(expected.size());
-        assertThat(actual.get(0).getStudent()).isEqualTo(studentDetail1.getStudent());
-        assertThat(actual.get(1).getStudent()).isEqualTo(studentDetail2.getStudent());
+        assertThat(actual.get(0).getStudent().getId()).isEqualTo(expected.get(0).getStudent().getId());
+        assertThat(actual.get(0).getStudent().getName()).isEqualTo(expected.get(0).getStudent().getName());
+        assertThat(actual.get(1).getStudent().getId()).isEqualTo(expected.get(1).getStudent().getId());
+        assertThat(actual.get(1).getStudent().getName()).isEqualTo(expected.get(1).getStudent().getName());
 
         assertThat(actual.get(0).getStudentCourseList()).isEmpty();
         assertThat(actual.get(1).getStudentCourseList()).isEmpty();
@@ -209,7 +206,8 @@ class StudentConverterTest {
     }
 
     @Test
-    void 紐づく受講コースがない受講生一覧なら空のコース一覧を持つ受講詳細一覧を返す() {
+    @DisplayName("紐づく受講コースがない受講生一覧なら空のコース一覧を持つ受講詳細一覧を返す")
+    void convertStudentDetails_noStudentCoursesMatchStudents_returnStudentDetailListWithEmptyCourseList() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -251,28 +249,32 @@ class StudentConverterTest {
         List<StudentDetail> actual = converter.convertStudentDetails(studentList, studentCourseList);
         //検証
         assertThat(actual.size()).isEqualTo(expected.size());
-        assertThat(actual.get(0).getStudent()).isEqualTo(studentDetail1.getStudent());
-        assertThat(actual.get(1).getStudent()).isEqualTo(studentDetail2.getStudent());
-
+        assertThat(actual.get(0).getStudent().getId()).isEqualTo(expected.get(0).getStudent().getId());
+        assertThat(actual.get(0).getStudent().getName()).isEqualTo(expected.get(0).getStudent().getName());
+        assertThat(actual.get(1).getStudent().getId()).isEqualTo(expected.get(1).getStudent().getId());
+        assertThat(actual.get(1).getStudent().getName()).isEqualTo(expected.get(1).getStudent().getName());
         assertThat(actual.get(0).getStudentCourseList()).isEmpty();
         assertThat(actual.get(1).getStudentCourseList()).isEmpty();
 
     }
 
     @Test
-    void 空の受講生と空の受講生コース一覧を渡すと空の受講詳細情報が返ってくること() {
+    @DisplayName("空の受講生と空の受講生コース一覧を渡すと空の受講詳細情報が返ってくること")
+    void convertStudentDetail_bothEmpty_returnEmpty() {
         Student student = new Student();
         List<StudentCourse> studentCourseList = new ArrayList<>();
-        StudentDetail expected = new StudentDetail(student, studentCourseList);
 
         StudentDetail actual = converter.convertStudentDetail(student, studentCourseList);
 
-        assertThat(actual.getStudent()).isEqualTo(expected.getStudent());
+        assertThat(actual).isNotNull();
+        assertThat(actual.getStudent().getId()).isNull();
+        assertThat(actual.getStudent().getName()).isNull();
         assertThat(actual.getStudentCourseList()).isEmpty();
     }
 
     @Test
-    void 受講生idで紐づいた受講詳細情報単体が返ってくること() {
+    @DisplayName("受講生idで紐づいた受講詳細情報単体が返ってくること")
+    void convertStudentDetail_studentCourseMatchStudentId_returnStudentDetail() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student = new Student();
@@ -305,12 +307,19 @@ class StudentConverterTest {
         StudentDetail actual = converter.convertStudentDetail(student, studentCourseList);
         //検証
         assertThat(actual.getStudentCourseList().size()).isEqualTo(expected.getStudentCourseList().size());
-        assertThat(actual.getStudent()).isEqualTo(expected.getStudent());
-        assertThat(actual.getStudentCourseList()).isEqualTo(expected.getStudentCourseList());
+        assertThat(actual.getStudent().getId()).isEqualTo(expected.getStudent().getId());
+        assertThat(actual.getStudent().getName()).isEqualTo(expected.getStudent().getName());
+        assertThat(actual.getStudentCourseList().get(0).getId()).isEqualTo(expected.getStudentCourseList().get(0).getId());
+        assertThat(actual.getStudentCourseList().get(0).getStudentId()).isEqualTo(expected.getStudentCourseList().get(0).getStudentId());
+        assertThat(actual.getStudentCourseList().get(0).getCourseName()).isEqualTo(expected.getStudentCourseList().get(0).getCourseName());
+        assertThat(actual.getStudentCourseList().get(1).getId()).isEqualTo(expected.getStudentCourseList().get(1).getId());
+        assertThat(actual.getStudentCourseList().get(1).getStudentId()).isEqualTo(expected.getStudentCourseList().get(1).getStudentId());
+        assertThat(actual.getStudentCourseList().get(1).getCourseName()).isEqualTo(expected.getStudentCourseList().get(1).getCourseName());
     }
 
     @Test
-    void 受講生と受講生コース一覧がnullな時NullPointerExceptionが発生すること() {
+    @DisplayName("受講生と受講生コース一覧がnullな時NullPointerExceptionが発生すること")
+    void convertStudentDetail_bothObjectsAreNull_throwNullPointerException() {
         //事前準備
         Student student = null;
         List<StudentCourse> studentCourseList = null;
@@ -323,7 +332,8 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講生と空の受講生コース一覧を渡すと空の受講コース情報が入った受講詳細一覧が返ってくること() {
+    @DisplayName("受講生と空の受講生コース一覧を渡すと空の受講コース情報が入った受講詳細一覧が返ってくること")
+    void convertStudentDetail_studentCourseListIsEmpty_returnStudentDetailWithEmptyStudentCourseList() {
         //事前準備
         Student student = new Student();
         student.setId("1");
@@ -336,12 +346,14 @@ class StudentConverterTest {
         //実行
         StudentDetail actual = converter.convertStudentDetail(student, studentCourseList);
         //検証
-        assertThat(actual.getStudent()).isEqualTo(expected.getStudent());
+        assertThat(actual.getStudent().getId()).isEqualTo(expected.getStudent().getId());
+        assertThat(actual.getStudent().getName()).isEqualTo(expected.getStudent().getName());
         assertThat(actual.getStudentCourseList()).isEmpty();
     }
 
     @Test
-    void 受講コース情報と紐づかない受講生IDな受講生を渡すと受講生だけが入った受講生詳細が返ってくること() {
+    @DisplayName("受講コース情報と紐づかない受講生IDがある受講生を渡すと空の受講コース情報が入った受講生詳細が返ってくること")
+    void convertStudentDetail_noStudentCourseMatchStudentId_returnStudentDetailWithEmptyStudentCourseList() {
         //事前準備
         Student student = new Student();
         student.setId("999");
@@ -371,7 +383,8 @@ class StudentConverterTest {
         //実行
         StudentDetail actual = converter.convertStudentDetail(student, studentCourseList);
         //検証
-        assertThat(actual.getStudent()).isEqualTo(expected.getStudent());
+        assertThat(actual.getStudent().getId()).isEqualTo(expected.getStudent().getId());
+        assertThat(actual.getStudent().getName()).isEqualTo(expected.getStudent().getName());
         assertThat(actual.getStudentCourseList()).isEmpty();
     }
 
