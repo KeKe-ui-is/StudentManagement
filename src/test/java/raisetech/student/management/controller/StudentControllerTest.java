@@ -233,15 +233,15 @@ class StudentControllerTest {
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
         Iterator<ConstraintViolation<Student>> iteratorViolation = violations.iterator();
 
-        ConstraintViolation<Student>violation1 = iteratorViolation.next();
-        ConstraintViolation<Student>violation2 = iteratorViolation.next();
+        ConstraintViolation<Student> violation1 = iteratorViolation.next();
+        ConstraintViolation<Student> violation2 = iteratorViolation.next();
 
         String message1 = resolveMessage(violation1);
         String message2 = resolveMessage(violation2);
-        List<String> messageList = List.of(message1,message2);
+        List<String> messageList = List.of(message1, message2);
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(messageList).contains("メールアドレスの入力が必要です","メールアドレスの形式が正しくありません");
+        assertThat(messageList).contains("メールアドレスの入力が必要です", "メールアドレスの形式が正しくありません");
 
     }
 
@@ -280,6 +280,7 @@ class StudentControllerTest {
     /**
      * 受講生情報と受講コース情報が入る想定
      * 入力チェックで返されるメッセージを取り出す
+     *
      * @param violation 入力チェックのエラーが入ったオブジェクト
      * @return String message
      */

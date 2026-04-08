@@ -17,7 +17,7 @@ public class StudentCourse {
     private String id;
     @Schema(description = "受講生ID", example = "1")
     private String studentId;
-    @Size(min = 1,max = 50) @NotNull
+    @Size(min = 1,max = 50, message = "{studentCourse.courseName.size}") @NotNull
     @Schema(description = "コース名", example = "Javaフルコース")
     private String courseName;
     @Schema(description = "受講開始日", example = "2026-04-01T10:00:00")
