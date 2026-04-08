@@ -28,7 +28,6 @@ class StudentConverterTest {
 
         List<StudentDetail> actual = converter.convertStudentDetails(studentList,studentCourseList);
 
-
         assertThat(actual).isEmpty();
         assertThat(actual).isEqualTo(expected);
     }
@@ -106,6 +105,57 @@ class StudentConverterTest {
         //検証
         assertThat(actual.size()).isEqualTo(0);
         assertThat(actual).isEmpty();
+    }
+
+    @Test
+    void 受講生情報のリストとnullな受講生コース情報のリストを渡すとNullPointerExceptionが発生すること() {
+        //事前準備
+        List<Student> studentList = new ArrayList<>();
+        Student student1 = new Student();
+        student1.setId("1");
+        student1.setName("テスト太郎");
+        studentList.add(student1);
+
+        Student student2 = new Student();
+        student2.setId("2");
+        student2.setName("テスト次郎");
+        studentList.add(student2);
+
+        List<StudentCourse> studentCourseList = null;
+
+        //実行
+        assertThatThrownBy(
+                () -> converter.convertStudentDetails(studentList, studentCourseList)
+        ).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void nullな受講生情報のリストと受講生コース情報のリストを渡すとNullPointerExceptionが発生すること() {
+        //事前準備
+        List<Student> studentList = null;
+
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+
+        StudentCourse studentCourse1 = new StudentCourse();
+        studentCourse1.setStudentId("1");
+        studentCourse1.setId("1");
+        studentCourse1.setCourseName("テストコース");
+        studentCourseList.add(studentCourse1);
+        StudentCourse studentCourse2 = new StudentCourse();
+        studentCourse2.setStudentId("2");
+        studentCourse2.setId("2");
+        studentCourse2.setCourseName("テストJavaコース");
+        studentCourseList.add(studentCourse2);
+        StudentCourse studentCourse3 = new StudentCourse();
+        studentCourse3.setStudentId("1");
+        studentCourse3.setId("3");
+        studentCourse3.setCourseName("テストAIコース");
+        studentCourseList.add(studentCourse3);
+
+        //実行
+        assertThatThrownBy(
+                () -> converter.convertStudentDetails(studentList, studentCourseList)
+        ).isInstanceOf(NullPointerException.class);
     }
 
     @Test
