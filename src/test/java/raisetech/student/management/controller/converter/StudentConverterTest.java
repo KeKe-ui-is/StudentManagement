@@ -2,8 +2,6 @@ package raisetech.student.management.controller.converter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentCourse;
 import raisetech.student.management.domain.StudentDetail;
@@ -13,9 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 class StudentConverterTest {
 
     private StudentConverter converter;
@@ -92,7 +88,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void nullのリスト受講生情報とnullのリスト受講生コース情報を渡すとnullな受講詳細情報のリストが返ってくること() {
+    void nullな受講生情報のリストとnullな受講生コース情報のリストを渡すと空の受講詳細情報のリストが返ってくること() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = null;
@@ -110,6 +106,18 @@ class StudentConverterTest {
         //検証
         assertThat(actual.size()).isEqualTo(0);
         assertThat(actual).isEmpty();
+    }
+
+    @Test
+    void 受講生情報のリストと受講生コース情報この両方がnullでそれを渡すとNullPointerExceptionが発生すること(){
+        //事前準備
+        List<Student> studentList = null;
+        List<StudentCourse> studentCourseList = null;
+
+        //実行
+        assertThatThrownBy(
+                () -> converter.convertStudentDetails(studentList, studentCourseList)
+        ).isInstanceOf(NullPointerException.class);
     }
 
     @Test
