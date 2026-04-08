@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentCourse;
 import raisetech.student.management.domain.StudentDetail;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
@@ -20,20 +21,21 @@ class StudentConverterTest {
     void before() {
         converter = new StudentConverter();
     }
+
     @Test
-    void 空のリストの受講生情報と空のリストの受講生コース情報を渡すと空の受講詳細情報のリストが返ってくること() {
+    void 空の受講生一覧と空の受講生コース一覧なら空の受講詳細一覧を返す() {
         List<Student> studentList = new ArrayList<>();
         List<StudentCourse> studentCourseList = new ArrayList<>();
         List<StudentDetail> expected = new ArrayList<>();
 
-        List<StudentDetail> actual = converter.convertStudentDetails(studentList,studentCourseList);
+        List<StudentDetail> actual = converter.convertStudentDetails(studentList, studentCourseList);
 
         assertThat(actual).isEmpty();
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void リストの受講生情報とリストの受講生コース情報を渡すと受講生idで紐づいた受講詳細情報のリストが返ってくること() {
+    void 受講生idで紐づいた受講詳細情報一覧が返ってくること() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -87,7 +89,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void nullな受講生情報のリストとnullな受講生コース情報のリストを渡すと空の受講詳細情報のリストが返ってくること() {
+    void null要素を含む受講生コース一覧なら空の受講詳細一覧を返す() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = null;
@@ -108,7 +110,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講生情報のリストとnullな受講生コース情報のリストを渡すとNullPointerExceptionが発生すること() {
+    void 受講生コース一覧がnullの時NullPointerExceptionが発生すること() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -130,7 +132,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void nullな受講生情報のリストと受講生コース情報のリストを渡すとNullPointerExceptionが発生すること() {
+    void 受講生一覧がnullの時NullPointerExceptionが発生すること() {
         //事前準備
         List<Student> studentList = null;
 
@@ -159,7 +161,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講生情報のリストと受講生コース情報この両方がnullでそれを渡すとNullPointerExceptionが発生すること(){
+    void 受講生一覧と受講コース一覧がnullの時NullPointerExceptionが発生すること() {
         //事前準備
         List<Student> studentList = null;
         List<StudentCourse> studentCourseList = null;
@@ -171,7 +173,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void リストの受講生情報と空のリストの受講生コース情報を渡すと空のリスト受講コース情報が入った受講詳細情報のリストが返ってくること() {
+    void 空の受講生コース一覧を渡すと空の受講コース情報一覧が入った受講詳細情報のリストが返ってくること() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -207,7 +209,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講コース情報と紐づかない受講生IDが入ったリストの受講生情報とリストの受講生コース情報を渡すと受講生情報だけが入った受講詳細情報のリストが返ってくること() {
+    void 紐づく受講コースがない受講生一覧なら空のコース一覧を持つ受講詳細一覧を返す() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -258,19 +260,19 @@ class StudentConverterTest {
     }
 
     @Test
-    void 空の受講生情報と空のリストの受講生コース情報を渡すと空の受講詳細情報が返ってくること() {
+    void 空の受講生と空の受講生コース一覧を渡すと空の受講詳細情報が返ってくること() {
         Student student = new Student();
         List<StudentCourse> studentCourseList = new ArrayList<>();
-        StudentDetail expected = new StudentDetail(student,studentCourseList);
+        StudentDetail expected = new StudentDetail(student, studentCourseList);
 
-        StudentDetail actual = converter.convertStudentDetail(student,studentCourseList);
+        StudentDetail actual = converter.convertStudentDetail(student, studentCourseList);
 
         assertThat(actual.getStudent()).isEqualTo(expected.getStudent());
         assertThat(actual.getStudentCourseList()).isEmpty();
     }
 
     @Test
-    void 受講生情報とリストの受講生コース情報を渡すと受講生idで紐づいた受講詳細情報が返ってくること() {
+    void 受講生idで紐づいた受講詳細情報が返ってくること() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student = new Student();
@@ -302,13 +304,13 @@ class StudentConverterTest {
         //実行
         StudentDetail actual = converter.convertStudentDetail(student, studentCourseList);
         //検証
-        assertThat( actual.getStudentCourseList().size()).isEqualTo(expected.getStudentCourseList().size());
+        assertThat(actual.getStudentCourseList().size()).isEqualTo(expected.getStudentCourseList().size());
         assertThat(actual.getStudent()).isEqualTo(expected.getStudent());
         assertThat(actual.getStudentCourseList()).isEqualTo(expected.getStudentCourseList());
     }
 
     @Test
-    void nullの受講生情報とnullのリスト受講生コース情報を渡すとNullPointerExceptionが発生すること() {
+    void 受講生と受講生コース一覧がnullな時NullPointerExceptionが発生すること() {
         //事前準備
         Student student = null;
         List<StudentCourse> studentCourseList = null;
@@ -321,7 +323,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講生情報と空のリスト受講生コース情報を渡すと空の受講コース情報が入った受講詳細情報のリストが返ってくること() {
+    void 受講生と空の受講生コース一覧を渡すと空の受講コース情報が入った受講詳細一覧が返ってくること() {
         //事前準備
         Student student = new Student();
         student.setId("1");
@@ -330,7 +332,7 @@ class StudentConverterTest {
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         //期待する値
-        StudentDetail expected = new StudentDetail(student,studentCourseList);
+        StudentDetail expected = new StudentDetail(student, studentCourseList);
         //実行
         StudentDetail actual = converter.convertStudentDetail(student, studentCourseList);
         //検証
@@ -339,7 +341,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講コース情報と紐づかない受講生IDが入った受講生情報とリストの受講生コース情報を渡すと受講生情報だけが入った受講詳細情報が返ってくること() {
+    void 受講コース情報と紐づかない受講生IDな受講生を渡すと受講生だけが入った受講生詳細が返ってくること() {
         //事前準備
         Student student = new Student();
         student.setId("999");
@@ -365,7 +367,7 @@ class StudentConverterTest {
 
         List<StudentCourse> expectedStudentCourseList = new ArrayList<>();
         //期待する値
-        StudentDetail expected = new StudentDetail(student,expectedStudentCourseList);
+        StudentDetail expected = new StudentDetail(student, expectedStudentCourseList);
         //実行
         StudentDetail actual = converter.convertStudentDetail(student, studentCourseList);
         //検証
