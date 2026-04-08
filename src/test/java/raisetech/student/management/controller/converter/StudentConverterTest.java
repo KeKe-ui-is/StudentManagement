@@ -35,7 +35,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講生idで紐づいた受講詳細情報一覧が返ってくること() {
+    void 受講生idで紐づいた受講詳細情報のリストが返ってくること() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -272,7 +272,7 @@ class StudentConverterTest {
     }
 
     @Test
-    void 受講生idで紐づいた受講詳細情報が返ってくること() {
+    void 受講生idで紐づいた受講詳細情報単体が返ってくること() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student = new Student();
