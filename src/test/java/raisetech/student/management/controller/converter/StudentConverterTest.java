@@ -36,7 +36,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生idで紐づいた受講詳細情報のリストが返ってくること")
-    void convertStudentDetails_MatchStudentId_returnStudentDetailList() {
+    void convertStudentDetails_matchStudentId_returnStudentDetailList() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -124,6 +124,166 @@ class StudentConverterTest {
     }
 
     @Test
+    @DisplayName("Nullな受講コースが混在している時NullPointerExceptionが発生すること")
+    void convertStudentDetails_mixNullStudentCourse_throwNullPointerException() {
+        //事前準備
+        List<Student> studentList = new ArrayList<>();
+        Student student1 = new Student();
+        student1.setId("1");
+        student1.setName("テスト太郎");
+        studentList.add(student1);
+
+        Student student2 = new Student();
+        student2.setId("2");
+        student2.setName("テスト次郎");
+        studentList.add(student2);
+
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+
+        StudentCourse studentCourse1 = new StudentCourse();
+        studentCourse1.setStudentId("1");
+        studentCourse1.setId("1");
+        studentCourse1.setCourseName("テストコース");
+        studentCourseList.add(studentCourse1);
+        StudentCourse studentCourse2 = null;
+        studentCourseList.add(studentCourse2);
+        StudentCourse studentCourse3 = new StudentCourse();
+        studentCourse3.setStudentId("1");
+        studentCourse3.setId("3");
+        studentCourse3.setCourseName("テストAIコース");
+        studentCourseList.add(studentCourse3);
+        //検証
+        assertThatThrownBy(
+                () -> converter.convertStudentDetails(studentList, studentCourseList)
+        ).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("受講コース情報のstudentIdフィールドの一部がNullでも正常に動作すること")
+    void convertStudentDetails_mixStudentCourseStudentIdAreNull_returnStudentDetailList() {
+        //事前準備
+        List<Student> studentList = new ArrayList<>();
+        Student student1 = new Student();
+        student1.setId("1");
+        student1.setName("テスト太郎");
+        studentList.add(student1);
+
+        Student student2 = new Student();
+        student2.setId("2");
+        student2.setName("テスト次郎");
+        studentList.add(student2);
+
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+
+        StudentCourse studentCourse1 = new StudentCourse();
+        studentCourse1.setStudentId(null);
+        studentCourse1.setId("1");
+        studentCourse1.setCourseName("テストコース");
+        studentCourseList.add(studentCourse1);
+        StudentCourse studentCourse2 = new StudentCourse();
+        studentCourse2.setStudentId("2");
+        studentCourse2.setId("2");
+        studentCourse2.setCourseName("テストJavaコース");
+        studentCourseList.add(studentCourse2);
+        StudentCourse studentCourse3 = new StudentCourse();
+        studentCourse3.setStudentId("1");
+        studentCourse3.setId("3");
+        studentCourse3.setCourseName("テストAIコース");
+        studentCourseList.add(studentCourse3);
+        //1人目の受講生詳細
+        List<StudentCourse> student1CourseList = new ArrayList<>();
+        student1CourseList.add(studentCourse3);
+        StudentDetail studentDetail1 = new StudentDetail(student1, student1CourseList);
+        //2人目の受講生詳細
+        List<StudentCourse> student2CourseList = new ArrayList<>();
+        student2CourseList.add(studentCourse2);
+        StudentDetail studentDetail2 = new StudentDetail(student2, student2CourseList);
+        //期待する値
+        List<StudentDetail> expected = List.of(studentDetail1, studentDetail2);
+        //実行
+        List<StudentDetail> actual = converter.convertStudentDetails(studentList, studentCourseList);
+        //検証
+        assertThat(actual.size()).isEqualTo(expected.size());
+        //1件目の検証
+        assertThat(actual.get(0).getStudent().getId()).isEqualTo(studentDetail1.getStudent().getId());
+        assertThat(actual.get(0).getStudent().getName()).isEqualTo(studentDetail1.getStudent().getName());
+        assertThat(actual.get(0).getStudentCourseList().size()).isEqualTo(studentDetail1.getStudentCourseList().size());
+        assertThat(actual.get(0).getStudentCourseList().get(0).getId()).isEqualTo(studentDetail1.getStudentCourseList().get(0).getId());
+        assertThat(actual.get(0).getStudentCourseList().get(0).getStudentId()).isEqualTo(studentDetail1.getStudentCourseList().get(0).getStudentId());
+        assertThat(actual.get(0).getStudentCourseList().get(0).getCourseName()).isEqualTo(studentDetail1.getStudentCourseList().get(0).getCourseName());
+        //2件目の検証
+        assertThat(actual.get(1).getStudent().getId()).isEqualTo(studentDetail2.getStudent().getId());
+        assertThat(actual.get(1).getStudent().getName()).isEqualTo(studentDetail2.getStudent().getName());
+        assertThat(actual.get(1).getStudentCourseList().size()).isEqualTo(studentDetail2.getStudentCourseList().size());
+        assertThat(actual.get(1).getStudentCourseList().get(0).getId()).isEqualTo(studentDetail2.getStudentCourseList().get(0).getId());
+        assertThat(actual.get(1).getStudentCourseList().get(0).getStudentId()).isEqualTo(studentDetail2.getStudentCourseList().get(0).getStudentId());
+        assertThat(actual.get(1).getStudentCourseList().get(0).getCourseName()).isEqualTo(studentDetail2.getStudentCourseList().get(0).getCourseName());
+    }
+
+    @Test
+    @DisplayName("受講コース情報のidフィールドの一部がNullでも正常に動作すること")
+    void convertStudentDetails_mixStudentCourseIdAreNull_returnStudentDetailList() {
+        //事前準備
+        List<Student> studentList = new ArrayList<>();
+        Student student1 = new Student();
+        student1.setId("1");
+        student1.setName("テスト太郎");
+        studentList.add(student1);
+
+        Student student2 = new Student();
+        student2.setId("2");
+        student2.setName("テスト次郎");
+        studentList.add(student2);
+
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+
+        StudentCourse studentCourse1 = new StudentCourse();
+        studentCourse1.setStudentId("1");
+        studentCourse1.setId(null);
+        studentCourse1.setCourseName("テストコース");
+        studentCourseList.add(studentCourse1);
+        StudentCourse studentCourse2 = new StudentCourse();
+        studentCourse2.setStudentId("2");
+        studentCourse2.setId("2");
+        studentCourse2.setCourseName("テストJavaコース");
+        studentCourseList.add(studentCourse2);
+        StudentCourse studentCourse3 = new StudentCourse();
+        studentCourse3.setStudentId("1");
+        studentCourse3.setId("3");
+        studentCourse3.setCourseName("テストAIコース");
+        studentCourseList.add(studentCourse3);
+        //1人目の受講生詳細
+        List<StudentCourse> student1CourseList = new ArrayList<>();
+        student1CourseList.add(studentCourse1);
+        student1CourseList.add(studentCourse3);
+        StudentDetail studentDetail1 = new StudentDetail(student1, student1CourseList);
+        //2人目の受講生詳細
+        List<StudentCourse> student2CourseList = new ArrayList<>();
+        student2CourseList.add(studentCourse2);
+        StudentDetail studentDetail2 = new StudentDetail(student2, student2CourseList);
+        //期待する値
+        List<StudentDetail> expected = List.of(studentDetail1, studentDetail2);
+        //実行
+        List<StudentDetail> actual = converter.convertStudentDetails(studentList, studentCourseList);
+        //検証
+        assertThat(actual.size()).isEqualTo(expected.size());
+        //1件目の検証
+        assertThat(actual.get(0).getStudent().getId()).isEqualTo(studentDetail1.getStudent().getId());
+        assertThat(actual.get(0).getStudent().getName()).isEqualTo(studentDetail1.getStudent().getName());
+        assertThat(actual.get(0).getStudentCourseList().size()).isEqualTo(studentDetail1.getStudentCourseList().size());
+        assertThat(actual.get(0).getStudentCourseList().get(0).getId()).isEqualTo(studentDetail1.getStudentCourseList().get(0).getId());
+        assertThat(actual.get(0).getStudentCourseList().get(0).getStudentId()).isEqualTo(studentDetail1.getStudentCourseList().get(0).getStudentId());
+        assertThat(actual.get(0).getStudentCourseList().get(0).getCourseName()).isEqualTo(studentDetail1.getStudentCourseList().get(0).getCourseName());
+        //2件目の検証
+        assertThat(actual.get(1).getStudent().getId()).isEqualTo(studentDetail2.getStudent().getId());
+        assertThat(actual.get(1).getStudent().getName()).isEqualTo(studentDetail2.getStudent().getName());
+        assertThat(actual.get(1).getStudentCourseList().size()).isEqualTo(studentDetail2.getStudentCourseList().size());
+        assertThat(actual.get(1).getStudentCourseList().get(0).getId()).isEqualTo(studentDetail2.getStudentCourseList().get(0).getId());
+        assertThat(actual.get(1).getStudentCourseList().get(0).getStudentId()).isEqualTo(studentDetail2.getStudentCourseList().get(0).getStudentId());
+        assertThat(actual.get(1).getStudentCourseList().get(0).getCourseName()).isEqualTo(studentDetail2.getStudentCourseList().get(0).getCourseName());
+    }
+
+    @Test
     @DisplayName("受講生一覧がnullの時NullPointerExceptionが発生すること")
     void convertStudentDetails_studentListIsNull_throwNullPointerException() {
         //事前準備
@@ -148,6 +308,80 @@ class StudentConverterTest {
         studentCourseList.add(studentCourse3);
 
         //実行
+        assertThatThrownBy(
+                () -> converter.convertStudentDetails(studentList, studentCourseList)
+        ).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("Nullな受講生が混在している時NullPointerExceptionが発生すること")
+    void convertStudentDetails_mixNullStudent_throwNullPointerException() {
+        //事前準備
+        List<Student> studentList = new ArrayList<>();
+        Student student1 = new Student();
+        student1.setId("1");
+        student1.setName("テスト太郎");
+        studentList.add(student1);
+
+        Student student2 = null;
+        studentList.add(student2);
+
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+
+        StudentCourse studentCourse1 = new StudentCourse();
+        studentCourse1.setStudentId("1");
+        studentCourse1.setId("1");
+        studentCourse1.setCourseName("テストコース");
+        studentCourseList.add(studentCourse1);
+        StudentCourse studentCourse2 = new StudentCourse();
+        studentCourse2.setStudentId("2");
+        studentCourse2.setId("2");
+        studentCourse2.setCourseName("テストJavaコース");
+        studentCourseList.add(studentCourse2);
+        StudentCourse studentCourse3 = new StudentCourse();
+        studentCourse3.setStudentId("1");
+        studentCourse3.setId("3");
+        studentCourse3.setCourseName("テストAIコース");
+        studentCourseList.add(studentCourse3);
+        //検証
+        assertThatThrownBy(
+                () -> converter.convertStudentDetails(studentList, studentCourseList)
+        ).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("受講生のidフィールドの一部がNullの時NullPointerExceptionが発生すること")
+    void convertStudentDetails_mixStudentFieldsAreNull_throwNullPointerException() {
+        //事前準備
+        List<Student> studentList = new ArrayList<>();
+        Student student1 = new Student();
+        student1.setId(null);
+        student1.setName("テスト太郎");
+        studentList.add(student1);
+
+        Student student2 = new Student();
+        student2.setId("2");
+        student2.setName("テスト次郎");
+        studentList.add(student2);
+
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+
+        StudentCourse studentCourse1 = new StudentCourse();
+        studentCourse1.setStudentId("1");
+        studentCourse1.setId("1");
+        studentCourse1.setCourseName("テストコース");
+        studentCourseList.add(studentCourse1);
+        StudentCourse studentCourse2 = new StudentCourse();
+        studentCourse2.setStudentId("2");
+        studentCourse2.setId("2");
+        studentCourse2.setCourseName("テストJavaコース");
+        studentCourseList.add(studentCourse2);
+        StudentCourse studentCourse3 = new StudentCourse();
+        studentCourse3.setStudentId("1");
+        studentCourse3.setId("3");
+        studentCourse3.setCourseName("テストAIコース");
+        studentCourseList.add(studentCourse3);
+        //検証
         assertThatThrownBy(
                 () -> converter.convertStudentDetails(studentList, studentCourseList)
         ).isInstanceOf(NullPointerException.class);
@@ -276,11 +510,9 @@ class StudentConverterTest {
     @DisplayName("受講生idで紐づいた受講詳細情報単体が返ってくること")
     void convertStudentDetail_studentCourseMatchStudentId_returnStudentDetail() {
         //事前準備
-        List<Student> studentList = new ArrayList<>();
         Student student = new Student();
         student.setId("1");
         student.setName("テスト太郎");
-        studentList.add(student);
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
@@ -315,6 +547,121 @@ class StudentConverterTest {
         assertThat(actual.getStudentCourseList().get(1).getId()).isEqualTo(expected.getStudentCourseList().get(1).getId());
         assertThat(actual.getStudentCourseList().get(1).getStudentId()).isEqualTo(expected.getStudentCourseList().get(1).getStudentId());
         assertThat(actual.getStudentCourseList().get(1).getCourseName()).isEqualTo(expected.getStudentCourseList().get(1).getCourseName());
+    }
+
+    @Test
+    @DisplayName("受講生がnullな時NullPointerExceptionが発生すること")
+    void convertStudentDetail_studentIsNull_throwNullPointerException() {
+        //事前準備
+        Student student = null;
+
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+
+        StudentCourse studentCourse1 = new StudentCourse();
+        studentCourse1.setStudentId("1");
+        studentCourse1.setId("1");
+        studentCourse1.setCourseName("テストコース");
+        studentCourseList.add(studentCourse1);
+        StudentCourse studentCourse2 = new StudentCourse();
+        studentCourse2.setStudentId("2");
+        studentCourse2.setId("2");
+        studentCourse2.setCourseName("テストJavaコース");
+        studentCourseList.add(studentCourse2);
+        StudentCourse studentCourse3 = new StudentCourse();
+        studentCourse3.setStudentId("1");
+        studentCourse3.setId("3");
+        studentCourse3.setCourseName("テストAIコース");
+        studentCourseList.add(studentCourse3);
+
+        assertThatThrownBy(
+                () -> converter.convertStudentDetail(student,studentCourseList)
+        ).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("受講生のidがnullな時NullPointerExceptionが発生すること")
+    void convertStudentDetail_studentIdIsNull_throwNullPointerException() {
+        //事前準備
+        Student student = new Student();
+        student.setId(null);
+        student.setName("テスト太郎");
+
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+
+        StudentCourse studentCourse1 = new StudentCourse();
+        studentCourse1.setStudentId("1");
+        studentCourse1.setId("1");
+        studentCourse1.setCourseName("テストコース");
+        studentCourseList.add(studentCourse1);
+        StudentCourse studentCourse2 = new StudentCourse();
+        studentCourse2.setStudentId("2");
+        studentCourse2.setId("2");
+        studentCourse2.setCourseName("テストJavaコース");
+        studentCourseList.add(studentCourse2);
+        StudentCourse studentCourse3 = new StudentCourse();
+        studentCourse3.setStudentId("1");
+        studentCourse3.setId("3");
+        studentCourse3.setCourseName("テストAIコース");
+        studentCourseList.add(studentCourse3);
+
+        assertThatThrownBy(
+                () -> converter.convertStudentDetail(student,studentCourseList)
+        ).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("受講コース情報一覧がnullな時NullPointerExceptionが発生すること")
+    void convertStudentDetail_studentCourseListIsNull_throwNullPointerException() {
+        //事前準備
+        Student student = new Student();
+        student.setId("1");
+        student.setName("テスト太郎");
+
+        List<StudentCourse> studentCourseList = null;
+
+        assertThatThrownBy(
+                () -> converter.convertStudentDetail(student,studentCourseList)
+        ).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("一部の受講コース情報のstudentIdがnullな時正常に動作する")
+    void convertStudentDetail_mixStudentCourseStudentIdAreNull_returnStudentDetail() {
+        //事前準備
+        Student student = new Student();
+        student.setId("1");
+        student.setName("テスト太郎");
+
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+
+        StudentCourse studentCourse1 = new StudentCourse();
+        studentCourse1.setStudentId(null);
+        studentCourse1.setId("1");
+        studentCourse1.setCourseName("テストコース");
+        studentCourseList.add(studentCourse1);
+        StudentCourse studentCourse2 = new StudentCourse();
+        studentCourse2.setStudentId("2");
+        studentCourse2.setId("2");
+        studentCourse2.setCourseName("テストJavaコース");
+        studentCourseList.add(studentCourse2);
+        StudentCourse studentCourse3 = new StudentCourse();
+        studentCourse3.setStudentId("1");
+        studentCourse3.setId("3");
+        studentCourse3.setCourseName("テストAIコース");
+        studentCourseList.add(studentCourse3);
+
+        List<StudentCourse> expectedStudentCourseList = List.of(studentCourse3);
+
+        StudentDetail expected = new StudentDetail(student, expectedStudentCourseList);
+        //実行
+        StudentDetail actual = converter.convertStudentDetail(student, studentCourseList);
+        //検証
+        assertThat(actual.getStudentCourseList().size()).isEqualTo(expected.getStudentCourseList().size());
+        assertThat(actual.getStudent().getId()).isEqualTo(expected.getStudent().getId());
+        assertThat(actual.getStudent().getName()).isEqualTo(expected.getStudent().getName());
+        assertThat(actual.getStudentCourseList().get(0).getId()).isEqualTo(expected.getStudentCourseList().get(0).getId());
+        assertThat(actual.getStudentCourseList().get(0).getStudentId()).isEqualTo(expected.getStudentCourseList().get(0).getStudentId());
+        assertThat(actual.getStudentCourseList().get(0).getCourseName()).isEqualTo(expected.getStudentCourseList().get(0).getCourseName());
     }
 
     @Test
