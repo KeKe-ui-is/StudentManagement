@@ -25,7 +25,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("空の受講生一覧と空の受講生コース一覧なら空の受講詳細一覧を返す")
-    void studentDetails_bothListsEmpty_returnEmpty() {
+    void converterStudentDetails_bothListsEmpty_returnEmpty() {
         List<Student> studentList = new ArrayList<>();
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
@@ -36,7 +36,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生idで紐づいた受講詳細情報のリストが返ってくること")
-    void studentDetails_matchStudentId_returnDetailList() {
+    void converterStudentDetails_matchId_returnList() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -102,7 +102,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生コース一覧がnullの時NullPointerExceptionが発生すること")
-    void studentDetails_courseListIsNull_throwNullPointerException() {
+    void converterStudentDetails_courseNull_throwException() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -125,7 +125,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("Nullな受講コースが混在している時NullPointerExceptionが発生すること")
-    void studentDetails_mixNullCourse_throwNullPointerException() {
+    void converterStudentDetails_mixNullCourse_throwException() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -160,7 +160,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講コース情報のstudentIdフィールドの一部がNullでも正常に動作すること")
-    void studentDetails_mixCourseStudentIdAreNull_returnDetailList() {
+    void converterStudentDetails_mixCourseStudentIdNull_returnList() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -222,7 +222,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講コース情報のidフィールドの一部がNullでも正常に動作すること")
-    void studentDetails_mixCourseIdAreNull_returnDetailList() {
+    void converterStudentDetails_mixCourseIdNull_returnList() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -285,7 +285,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生一覧がnullの時NullPointerExceptionが発生すること")
-    void studentDetails_studentListIsNull_throwNullPointerException() {
+    void converterStudentDetails_studentListNull_throwException() {
         //事前準備
         List<Student> studentList = null;
 
@@ -315,7 +315,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("Nullな受講生が混在している時NullPointerExceptionが発生すること")
-    void studentDetails_mixNullStudent_throwNullPointerException() {
+    void converterStudentDetails_mixNullStudent_throwException() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -351,7 +351,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生のidフィールドの一部がNullの時NullPointerExceptionが発生すること")
-    void studentDetails_mixStudentIdAreNull_throwNullPointerException() {
+    void converterStudentDetails_mixStudentIdNull_throwException() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -389,7 +389,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生一覧と受講コース一覧がnullの時NullPointerExceptionが発生すること")
-    void studentDetails_bothListsAreNull_throwNullPointerException() {
+    void converterStudentDetails_bothListsNull_throwException() {
         //事前準備
         List<Student> studentList = null;
         List<StudentCourse> studentCourseList = null;
@@ -402,7 +402,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("空の受講コース一覧を渡すと空の受講コース情報一覧が入った受講詳細情報のリストが返ってくること")
-    void studentDetails_courseIsEmpty_returnDetailListWithEmptyCourseList() {
+    void converterStudentDetails_courseIsEmpty_returnListEmptyCourse() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -441,7 +441,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("紐づく受講コースがない受講生一覧なら空のコース一覧を持つ受講詳細一覧を返す")
-    void studentDetails_noMatchCourse_returnDetailListWithEmptyCourseList() {
+    void converterStudentDetails_noMatchCourse_returnListEmptyCourse() {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
@@ -494,7 +494,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("空の受講生と空の受講生コース一覧を渡すと空の受講詳細情報が返ってくること")
-    void studentDetail_bothEmpty_returnEmpty() {
+    void converterStudentDetail_bothEmpty_returnEmpty() {
         Student student = new Student();
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
@@ -508,7 +508,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生idで紐づいた受講詳細情報単体が返ってくること")
-    void studentDetail_courseMatchStudentId_returnDetail() {
+    void converterStudentDetail_match_returnDetail() {
         //事前準備
         Student student = new Student();
         student.setId("1");
@@ -551,7 +551,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生がnullな時NullPointerExceptionが発生すること")
-    void studentDetail_studentIsNull_throwNullPointerException() {
+    void converterStudentDetail_studentNull_throwException() {
         //事前準備
         Student student = null;
 
@@ -580,7 +580,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生のidがnullな時NullPointerExceptionが発生すること")
-    void studentDetail_studentIdIsNull_throwNullPointerException() {
+    void converterStudentDetail_studentIdNull_throwException() {
         //事前準備
         Student student = new Student();
         student.setId(null);
@@ -611,7 +611,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講コース情報一覧がnullな時NullPointerExceptionが発生すること")
-    void studentDetail_courseListIsNull_throwNullPointerException() {
+    void converterStudentDetail_courseListNull_throwException() {
         //事前準備
         Student student = new Student();
         student.setId("1");
@@ -626,7 +626,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("一部の受講コース情報のstudentIdがnullな時正常に動作する")
-    void studentDetail_mixCourseStudentIdAreNull_returnDetail() {
+    void converterStudentDetail_mixCourseStudentIdNull_returnDetail() {
         //事前準備
         Student student = new Student();
         student.setId("1");
@@ -666,7 +666,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生と受講生コース一覧がnullな時NullPointerExceptionが発生すること")
-    void studentDetail_bothNull_throwNullPointerException() {
+    void converterStudentDetail_bothNull_throwException() {
         //事前準備
         Student student = null;
         List<StudentCourse> studentCourseList = null;
@@ -680,7 +680,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講生と空の受講生コース一覧を渡すと空の受講コース情報が入った受講詳細一覧が返ってくること")
-    void studentDetail_courseListIsEmpty_returnDetailWithEmptyCourseList() {
+    void converterStudentDetail_courseListEmpty_returnDetailEmptyCourse() {
         //事前準備
         Student student = new Student();
         student.setId("1");
@@ -700,7 +700,7 @@ class StudentConverterTest {
 
     @Test
     @DisplayName("受講コース情報と紐づかない受講生IDがある受講生を渡すと空の受講コース情報が入った受講生詳細が返ってくること")
-    void studentDetail_noCourseMatchStudentId_returnDetailWithEmptyCourseList() {
+    void converterStudentDetail_noMatch_returnDetailEmptyCourse() {
         //事前準備
         Student student = new Student();
         student.setId("999");
