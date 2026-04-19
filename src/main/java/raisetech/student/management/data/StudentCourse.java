@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @Setter
 public class StudentCourse {
     @Schema(description = "受講コースID", example = "1")
-    private String id;
+    private Integer id;
     @Schema(description = "受講生ID", example = "1")
-    private String studentId;
+    private Integer studentId;
     @Size(min = 1,max = 50, message = "{studentCourse.courseName.size}") @NotNull
     @Schema(description = "コース名", example = "Javaフルコース")
     private String courseName;

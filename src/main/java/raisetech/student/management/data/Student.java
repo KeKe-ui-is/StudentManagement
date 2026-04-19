@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 /*
   受講生情報を扱うオブジェクト
@@ -13,9 +14,9 @@ import lombok.Setter;
 @Setter
 public class Student {
     @Schema(description = "受講生ID", example = "1")
-    @Size(min = 1,max = 3, message = "{student.id.size}")
-    @Pattern(regexp = "^\\d+$", message = "{student.id.pattern}")
-    private String id;
+    @Min(value = 0, message = "{student.id.size}")
+    @Max(value = 999, message = "{student.id.size}")
+    private Integer id;
     // 名前
     @Schema(description = "名前", example = "山田太郎")
     @NotBlank(message = "{student.name.required}")

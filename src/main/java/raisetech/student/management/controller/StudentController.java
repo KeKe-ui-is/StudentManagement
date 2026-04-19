@@ -7,10 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.apache.ibatis.annotations.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -88,11 +85,13 @@ public class StudentController {
     public StudentDetail getStudent(
             @Parameter(description = "受講生ID 1～3文字で入力", required = true)
             @PathVariable
-            @NotBlank(message = "{student.id.required}")
-            @Size(min = 1, max = 3, message = "{student.id.size}")
-            @Pattern(regexp = "^\\d+$", message = "{student.id.pattern}")
+//            @NotBlank(message = "{student.id.required}")
+//            @Size(min = 1, max = 3, message = "{student.id.size}")
+            @Min(value = 0, message = "{student.id.size}")
+            @Max(value = 999, message = "{student.id.size}")
+//            @Pattern(regexp = "^\\d+$", message = "{student.id.pattern}")
             @NotNull
-            String id) {
+            Integer id) {
         return service.searchStudent(id);
     }
 
