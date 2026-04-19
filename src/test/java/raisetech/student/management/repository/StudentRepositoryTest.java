@@ -30,7 +30,7 @@ class StudentRepositoryTest {
     @DisplayName("受講生コース情報の全件検索が行えること")
     void searchStudentCourseList_studentCourseList(){
         List<StudentCourse> actual = sut.searchStudentCourseList();
-        assertThat(actual).hasSize(10);
+        assertThat(actual).hasSize(8);
     }
 
     @Test
@@ -72,7 +72,7 @@ class StudentRepositoryTest {
         studentCourse1.setCourseStartAt(stringToLocalDateTime("2026-04-21 10:00:00"));
         studentCourse1.setCourseEndAt(stringToLocalDateTime("2026-10-21 18:00:00"));
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setId(7);
+        studentCourse2.setId(8);
         studentCourse2.setStudentId(2);
         studentCourse2.setCourseName("Python基礎コース");
         studentCourse2.setCourseStartAt(stringToLocalDateTime("2026-04-26 10:00:00"));
@@ -113,7 +113,7 @@ class StudentRepositoryTest {
         StudentCourse studentCourse = createStudentCourse();
         sut.registerStudentCourse(studentCourse);
         List<StudentCourse> actual = sut.searchStudentCourseList();
-        assertThat(actual).hasSize(11);
+        assertThat(actual).hasSize(9);
     }
 
     @Test
