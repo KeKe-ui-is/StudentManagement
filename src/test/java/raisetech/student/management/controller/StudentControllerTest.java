@@ -62,7 +62,7 @@ class StudentControllerTest {
     void 受講生詳細の受講生に適切な情報を入力した際に入力チェックにかからないこと() {
 
         Student student = new Student();
-        student.setId("001");
+        student.setId(1);
         student.setName("テスト太郎");
         student.setKanaName("テストタロウ");
         student.setNickname("テスタロウ");
@@ -77,27 +77,9 @@ class StudentControllerTest {
     }
 
     @Test
-    void 受講生詳細の受講生IDに数字以外を入力した際に入力チェックにかかること() {
-        Student student = new Student();
-        student.setId("テスト"); //idだけエラーに
-        student.setName("テスト太郎");
-        student.setKanaName("テストタロウ");
-        student.setNickname("テスタロウ");
-        student.setEmail("test@example.jp");
-        student.setAge(20);
-
-        Set<ConstraintViolation<Student>> violations = validator.validate(student);
-        ConstraintViolation<Student> violation = violations.iterator().next();
-        String message = resolveMessage(violation);
-
-        assertThat(violations.size()).isEqualTo(1);
-        assertThat("数字のみ入力してください").isEqualTo(message);
-    }
-
-    @Test
     void 受講生詳細の受講生IDに3桁以上の数値を入力した際に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("1111");
+        student.setId(1111);
         student.setName("テスト太郎");
         student.setKanaName("テストタロウ");
         student.setNickname("テスタロウ");
@@ -115,7 +97,7 @@ class StudentControllerTest {
     @Test
     void 受講生詳細の受講生の名前が空の値を入力した際に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName(" ");
         student.setKanaName("テストタロウ");
         student.setNickname("テスタロウ");
@@ -133,7 +115,7 @@ class StudentControllerTest {
     @Test
     void 受講生詳細の受講生の名前に５０文字以上の値を入力した際に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("これは50文字以上の名前ですこれは50文字以上の名前ですこれは50文字以上の名前ですこれは50文字以上の名前です");
         student.setKanaName("テストタロウ");
         student.setNickname("テスタロウ");
@@ -151,7 +133,7 @@ class StudentControllerTest {
     @Test
     void 受講生詳細の受講生のカナ名が空の値を入力した際に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
         student.setKanaName(" ");
         student.setNickname("テスタロウ");
@@ -169,7 +151,7 @@ class StudentControllerTest {
     @Test
     void 受講生詳細の受講生のカナ名に５０文字以上の値を入力した際に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
         student.setKanaName("コレハ50モジイジョウノカナメイデスコレハ50モジイジョウノカナメイデスコレハ50モジイジョウノカナメイデス");
         student.setNickname("テスタロウ");
@@ -187,7 +169,7 @@ class StudentControllerTest {
     @Test
     void 受講生詳細の受講生のニックネームに空の値を入力した際に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
         student.setKanaName("テストタロウ");
         student.setNickname(" ");
@@ -205,7 +187,7 @@ class StudentControllerTest {
     @Test
     void 受講生詳細の受講生のニックネームに５０文字以上の値を入力した際に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
         student.setKanaName("テストタロウ");
         student.setNickname("５０文字以上のニックネームです５０文字以上のニックネームです５０文字以上のニックネームです５０文字以上のニックネームです");
@@ -223,7 +205,7 @@ class StudentControllerTest {
     @Test
     void 受講生詳細の受講生のメールアドレスに空の値を入力した際に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
         student.setKanaName("テストタロウ");
         student.setNickname("テスタロウ");
@@ -248,7 +230,7 @@ class StudentControllerTest {
     @Test
     void 受講生詳細の受講生のメールアドレスに５０文字以上の値を入力した際に入力チェックにかかること() {
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
         student.setKanaName("テストタロウ");
         student.setNickname("テストタロウ");
@@ -307,7 +289,7 @@ class StudentControllerTest {
          *         return service.searchStudent(id);
          *     }
          */
-        String id = "999";
+        Integer id = 999;
         when(service.searchStudent(id)).thenReturn(new StudentDetail());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/student/{id}", id))
@@ -325,23 +307,8 @@ class StudentControllerTest {
     }
 
     @Test
-    void 受講生詳細情報の検索で入力されたidが数字以外で入力チェックにかかること() throws Exception {
-
-        String id = "tes";
-        mockMvc.perform(MockMvcRequestBuilders.get("/student/{id}", id))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.timestamp").exists())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.errors.length()").value(1))
-                .andExpect(jsonPath("$.errors[0].path").value("id"))
-                .andExpect(jsonPath("$.errors[0].message").value("数字のみ入力してください"))
-                .andExpect(jsonPath("$.url").value("/student/tes"));
-    }
-
-    @Test
     void 受講生詳細情報の検索で入力されたidが3桁以上で入力チェックにかかること() throws Exception {
-        String id = "1111";
+        Integer id = 1111;
         mockMvc.perform(MockMvcRequestBuilders.get("/student/{id}", id))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -498,7 +465,7 @@ class StudentControllerTest {
          *     }
          */
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
         student.setKanaName("テストタロウ");
         student.setNickname("テスタロウ");
@@ -506,8 +473,8 @@ class StudentControllerTest {
         student.setAge(20);
         student.setSex("男性");
         StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setId("2");
-        studentCourse.setStudentId("1");
+        studentCourse.setId(2);
+        studentCourse.setStudentId(1);
         studentCourse.setCourseName("Javaフルコース");
         List<StudentCourse> studentCourseList = new ArrayList<>();
         studentCourseList.add(studentCourse);
@@ -534,7 +501,7 @@ class StudentControllerTest {
          *     }
          */
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("");
         student.setKanaName("テストタロウテストタロウテストタロウテストタロウテストタロウテストタロウテストタロウテストタロウテストタロウテストタロウ");
         student.setNickname("テスタロウ");

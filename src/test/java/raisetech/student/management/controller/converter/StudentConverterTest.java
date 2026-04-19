@@ -40,30 +40,30 @@ class StudentConverterTest {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
-        student1.setId("1");
+        student1.setId(1);
         student1.setName("テスト太郎");
         studentList.add(student1);
 
         Student student2 = new Student();
-        student2.setId("2");
+        student2.setId(2);
         student2.setName("テスト次郎");
         studentList.add(student2);
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
         //1人目の受講生詳細
@@ -106,12 +106,12 @@ class StudentConverterTest {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
-        student1.setId("1");
+        student1.setId(1);
         student1.setName("テスト太郎");
         studentList.add(student1);
 
         Student student2 = new Student();
-        student2.setId("2");
+        student2.setId(2);
         student2.setName("テスト次郎");
         studentList.add(student2);
 
@@ -129,27 +129,27 @@ class StudentConverterTest {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
-        student1.setId("1");
+        student1.setId(1);
         student1.setName("テスト太郎");
         studentList.add(student1);
 
         Student student2 = new Student();
-        student2.setId("2");
+        student2.setId(2);
         student2.setName("テスト次郎");
         studentList.add(student2);
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = null;
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
         //検証
@@ -164,12 +164,12 @@ class StudentConverterTest {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
-        student1.setId("1");
+        student1.setId(1);
         student1.setName("テスト太郎");
         studentList.add(student1);
 
         Student student2 = new Student();
-        student2.setId("2");
+        student2.setId(2);
         student2.setName("テスト次郎");
         studentList.add(student2);
 
@@ -177,17 +177,17 @@ class StudentConverterTest {
 
         StudentCourse studentCourse1 = new StudentCourse();
         studentCourse1.setStudentId(null);
-        studentCourse1.setId("1");
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
         //1人目の受講生詳細
@@ -226,30 +226,30 @@ class StudentConverterTest {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
-        student1.setId("1");
+        student1.setId(1);
         student1.setName("テスト太郎");
         studentList.add(student1);
 
         Student student2 = new Student();
-        student2.setId("2");
+        student2.setId(2);
         student2.setName("テスト次郎");
         studentList.add(student2);
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
+        studentCourse1.setStudentId(1);
         studentCourse1.setId(null);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
         //1人目の受講生詳細
@@ -292,18 +292,18 @@ class StudentConverterTest {
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
 
@@ -319,7 +319,7 @@ class StudentConverterTest {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
-        student1.setId("1");
+        student1.setId(1);
         student1.setName("テスト太郎");
         studentList.add(student1);
 
@@ -329,18 +329,18 @@ class StudentConverterTest {
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
         //検証
@@ -360,25 +360,25 @@ class StudentConverterTest {
         studentList.add(student1);
 
         Student student2 = new Student();
-        student2.setId("2");
+        student2.setId(2);
         student2.setName("テスト次郎");
         studentList.add(student2);
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
         //検証
@@ -406,12 +406,12 @@ class StudentConverterTest {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
-        student1.setId("1");
+        student1.setId(1);
         student1.setName("テスト太郎");
         studentList.add(student1);
 
         Student student2 = new Student();
-        student2.setId("2");
+        student2.setId(2);
         student2.setName("テスト次郎");
         studentList.add(student2);
 
@@ -445,30 +445,30 @@ class StudentConverterTest {
         //事前準備
         List<Student> studentList = new ArrayList<>();
         Student student1 = new Student();
-        student1.setId("999");
+        student1.setId(999);
         student1.setName("テスト太郎");
         studentList.add(student1);
 
         Student student2 = new Student();
-        student2.setId("998");
+        student2.setId(998);
         student2.setName("テスト次郎");
         studentList.add(student2);
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
         //1人目の受講生詳細
@@ -511,24 +511,24 @@ class StudentConverterTest {
     void converterStudentDetail_match_returnDetail() {
         //事前準備
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
 
@@ -558,18 +558,18 @@ class StudentConverterTest {
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
 
@@ -589,18 +589,18 @@ class StudentConverterTest {
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
 
@@ -614,7 +614,7 @@ class StudentConverterTest {
     void converterStudentDetail_courseListNull_throwException() {
         //事前準備
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
 
         List<StudentCourse> studentCourseList = null;
@@ -629,24 +629,24 @@ class StudentConverterTest {
     void converterStudentDetail_mixCourseStudentIdNull_returnDetail() {
         //事前準備
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
         studentCourse1.setStudentId(null);
-        studentCourse1.setId("1");
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
 
@@ -683,7 +683,7 @@ class StudentConverterTest {
     void converterStudentDetail_courseListEmpty_returnDetailEmptyCourse() {
         //事前準備
         Student student = new Student();
-        student.setId("1");
+        student.setId(1);
         student.setName("テスト太郎");
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
@@ -703,24 +703,24 @@ class StudentConverterTest {
     void converterStudentDetail_noMatch_returnDetailEmptyCourse() {
         //事前準備
         Student student = new Student();
-        student.setId("999");
+        student.setId(999);
         student.setName("テスト太郎");
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
 
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setStudentId("1");
-        studentCourse1.setId("1");
+        studentCourse1.setStudentId(1);
+        studentCourse1.setId(1);
         studentCourse1.setCourseName("テストコース");
         studentCourseList.add(studentCourse1);
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setStudentId("2");
-        studentCourse2.setId("2");
+        studentCourse2.setStudentId(2);
+        studentCourse2.setId(2);
         studentCourse2.setCourseName("テストJavaコース");
         studentCourseList.add(studentCourse2);
         StudentCourse studentCourse3 = new StudentCourse();
-        studentCourse3.setStudentId("1");
-        studentCourse3.setId("3");
+        studentCourse3.setStudentId(1);
+        studentCourse3.setId(3);
         studentCourse3.setCourseName("テストAIコース");
         studentCourseList.add(studentCourse3);
 

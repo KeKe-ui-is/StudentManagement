@@ -36,9 +36,9 @@ class StudentRepositoryTest {
     @Test
     @DisplayName("指定したidに合致する受講生の検索が行えること")
     void searchStudent_student(){
-        String id = "1";
+        Integer id = 1;
         Student expected = new Student();
-        expected.setId("1");
+        expected.setId(1);
         expected.setName("中村悠斗");
         expected.setKanaName("ナカムラユウト");
         expected.setNickname("ユウト");
@@ -57,7 +57,7 @@ class StudentRepositoryTest {
     @Test
     @DisplayName("存在しないidを指定して受講生の検索をすると受講生情報がNullで返ること")
     void searchStudent_notFound_returnEmpty(){
-        Student actual = sut.searchStudent("999");
+        Student actual = sut.searchStudent(999);
 
         assertThat(actual).isNull();
     }
@@ -66,14 +66,14 @@ class StudentRepositoryTest {
     @DisplayName("指定した受講生idに合致する受講生コース情報の検索が行えること")
     void searchStudentCourse_studentCourseList() {
         StudentCourse studentCourse1 = new StudentCourse();
-        studentCourse1.setId("2");
-        studentCourse1.setStudentId("2");
+        studentCourse1.setId(2);
+        studentCourse1.setStudentId(2);
         studentCourse1.setCourseName("Web開発コース");
         studentCourse1.setCourseStartAt(stringToLocalDateTime("2026-04-21 10:00:00"));
         studentCourse1.setCourseEndAt(stringToLocalDateTime("2026-10-21 18:00:00"));
         StudentCourse studentCourse2 = new StudentCourse();
-        studentCourse2.setId("7");
-        studentCourse2.setStudentId("2");
+        studentCourse2.setId(7);
+        studentCourse2.setStudentId(2);
         studentCourse2.setCourseName("Python基礎コース");
         studentCourse2.setCourseStartAt(stringToLocalDateTime("2026-04-26 10:00:00"));
         studentCourse2.setCourseEndAt(stringToLocalDateTime("2026-10-26 18:00:00"));
@@ -82,7 +82,7 @@ class StudentRepositoryTest {
         expected.add(studentCourse1);
         expected.add(studentCourse2);
 
-        List<StudentCourse> actual = sut.searchStudentCourse("2");
+        List<StudentCourse> actual = sut.searchStudentCourse(2);
 
         assertThat(actual).hasSize(2);
 
@@ -93,7 +93,7 @@ class StudentRepositoryTest {
     @Test
     @DisplayName("存在しない受講生idを指定すると受講生コース情報が空で返ること")
     void searchStudentCourse_notFound_returnEmpty() {
-        List<StudentCourse> actual = sut.searchStudentCourse("999");
+        List<StudentCourse> actual = sut.searchStudentCourse(999);
 
         assertThat(actual).isEmpty();
     }
@@ -119,7 +119,7 @@ class StudentRepositoryTest {
     @Test
     @DisplayName("受講生の更新が行えること")
     void updateStudent_test(){
-        String id = "1";
+        Integer id = 1;
         Student expected = createStudent();
         expected.setId(id);
         sut.updateStudent(expected);
@@ -131,8 +131,8 @@ class StudentRepositoryTest {
     @Test
     @DisplayName("受講生コース情報の更新が行えること")
     void updateStudentCourse_test(){
-        String id ="1";
-        String studentId = "1";
+        Integer id =1;
+        Integer studentId = 1;
         StudentCourse expected = createStudentCourse();
         expected.setId(id);
         expected.setStudentId(studentId);
@@ -169,7 +169,7 @@ class StudentRepositoryTest {
      */
     private static StudentCourse createStudentCourse(){
         StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudentId("1");
+        studentCourse.setStudentId(1);
         studentCourse.setCourseName("テストコース");
         studentCourse.setCourseStartAt(stringToLocalDateTime("2026-04-01 10:00:00"));
         studentCourse.setCourseEndAt(stringToLocalDateTime("2026-10-01 18:00:00"));
