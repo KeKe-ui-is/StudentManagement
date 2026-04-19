@@ -27,13 +27,13 @@ public interface StudentRepository {
      * @param id 受講生ID
      * @return 受講生情報(単体)
      */
-    Student searchStudent(String id);
+    Student searchStudent(Integer id);
     /**
      * 受講生IDと紐づく受講生コース情報を取得
      * @param id 受講生ID
      * @return 受講生に紐づく受講生コース情報
      */
-    List<StudentCourse> searchStudentCourse(String id);
+    List<StudentCourse> searchStudentCourse(Integer id);
     /**
      * 新規で受講生を登録する際に使われる
      * IDは自動採番
@@ -57,12 +57,5 @@ public interface StudentRepository {
      * @param studentCourse　受講生コース情報
      */
     void updateStudentCourse(StudentCourse studentCourse);
-//    @Insert("INSERT student values(#{name},#{age})")
-//    void registerStudent(String name,int age);
-//
-//    @Update("UPDATE student SET age = #{age} WHERE name = #{name}")
-//    void updateStudent(String name ,int age);
-//
-//    @Delete("DELETE FROM student WHERE name = #{name}")
-//    void deleteStudent(String name);
+
 }

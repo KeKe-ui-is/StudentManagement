@@ -44,13 +44,13 @@ class StudentServiceTest {
          */
         List<Student> studentList = new ArrayList<>();
         Student student = new Student();
-        student.setId("999");
+        student.setId(999);
         student.setName("テスト太郎");
         studentList.add(student);
         List<StudentCourse> studentCourseList = new ArrayList<>();
         StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudentId("999");
-        studentCourse.setId("998");
+        studentCourse.setStudentId(999);
+        studentCourse.setId(998);
         studentCourse.setCourseName("テストコース");
         studentCourseList.add(studentCourse);
 
@@ -100,16 +100,16 @@ class StudentServiceTest {
     void idを受け取り受講生詳細検索_リポジトリから受講生情報と受講生コース情報の検索ができていること() {
         /**
          *     元のコード
-         *     public StudentDetail searchStudent(String id){
+         *     public StudentDetail searchStudent(Integer id){
          *         Student student= repository.searchStudent(id);
          *         List<StudentCourse> studentCourse = repository.searchStudentCourse(student.getId());
          *         return new StudentDetail(student, studentCourse);
          *     }
          */
 //        事前準備
-        String id = "999";
+        Integer id = 999;
         Student student = new Student();
-        student.setId("999");
+        student.setId(999);
         student.setName("テスト三郎");
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
@@ -132,9 +132,9 @@ class StudentServiceTest {
 //        検証
         Assertions.assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
         Assertions.assertEquals(expected.getStudent().getName(), actual.getStudent().getName());
-        Assertions.assertEquals("999", actual.getStudent().getId());
-        Assertions.assertEquals("999", actual.getStudentCourseList().get(0).getStudentId());
-        Assertions.assertEquals("999", actual.getStudentCourseList().get(1).getStudentId());
+        Assertions.assertEquals(999, actual.getStudent().getId());
+        Assertions.assertEquals(999, actual.getStudentCourseList().get(0).getStudentId());
+        Assertions.assertEquals(999, actual.getStudentCourseList().get(1).getStudentId());
 
         Mockito.verify(repository, Mockito.times(1)).searchStudent(id);
         Mockito.verify(repository, Mockito.times(1)).searchStudentCourse(student.getId());
@@ -145,14 +145,14 @@ class StudentServiceTest {
     void idを受け取り受講生詳細検索_存在しないidを指定したときエラーが返ること() {
         /**
          *     元のコード
-         *     public StudentDetail searchStudent(String id){
+         *     public StudentDetail searchStudent(Integer id){
          *         Student student= repository.searchStudent(id);
          *         List<StudentCourse> studentCourse = repository.searchStudentCourse(student.getId());
          *         return new StudentDetail(student, studentCourse);
          *     }
          */
 //        事前準備
-        String id = "999";
+        Integer id = 999;
         Mockito.when(repository.searchStudent(id)).thenReturn(null);
 //        実行
         NullPointerException e = assertThrows(NullPointerException.class, () -> {
@@ -198,7 +198,7 @@ class StudentServiceTest {
 
         Mockito.doAnswer(invocation -> {
             Student argStudent = invocation.getArgument(0);
-            argStudent.setId("999");
+            argStudent.setId(999);
             return null;
         }).when(repository).registerStudent(Mockito.any(Student.class));
 
@@ -209,8 +209,8 @@ class StudentServiceTest {
         Mockito.verify(repository, Mockito.times(1)).registerStudent(student);
         Mockito.verify(repository, Mockito.times(2)).registerStudentCourse(Mockito.any(StudentCourse.class));
 //        StudentCourseにidが入っているか
-        Assertions.assertEquals("999", st1.getStudentId());
-        Assertions.assertEquals("999", st2.getStudentId());
+        Assertions.assertEquals(999, st1.getStudentId());
+        Assertions.assertEquals(999, st2.getStudentId());
 //        日時が入っているか
         Assertions.assertNotNull(st1.getCourseStartAt());
         Assertions.assertNotNull(st1.getCourseEndAt());
@@ -221,7 +221,7 @@ class StudentServiceTest {
     @Test
     void 受講生詳細情報の新規登録_受講生詳細情報が登録できておりIDが入力されるか_受講生コース情報が0件の場合() {
 //        事前準備
-        String id = "999";
+        Integer id = 999;
         Student student = new Student();
         student.setName("テスト花子");
 
@@ -237,7 +237,7 @@ class StudentServiceTest {
 //        実行
         StudentDetail actual = sut.registerStudent(studentDetail);
 //        確認
-        Assertions.assertEquals("999", student.getId());
+        Assertions.assertEquals(999, student.getId());
         Assertions.assertEquals(expected, actual);
         Mockito.verify(repository, Mockito.times(1)).registerStudent(student);
         Mockito.verify(repository, Mockito.times(0)).registerStudentCourse(Mockito.any(StudentCourse.class));
@@ -257,15 +257,15 @@ class StudentServiceTest {
 //        準備
         Student student = new Student();
         student.setName("テスト花子");
-        student.setId("999");
+        student.setId(999);
 
         List<StudentCourse> studentCourseList = new ArrayList<>();
         StudentCourse st1 = new StudentCourse();
         st1.setCourseName("Javaフルコース");
-        st1.setId("999");
+        st1.setId(999);
         StudentCourse st2 = new StudentCourse();
         st2.setCourseName("AWSコース");
-        st2.setId("998");
+        st2.setId(998);
         studentCourseList.add(st1);
         studentCourseList.add(st2);
 
