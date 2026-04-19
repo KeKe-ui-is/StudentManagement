@@ -21,6 +21,7 @@
         SELECT *
         FROM students_courses
         WHERE student_id = #{id}
+        ORDER BY id
     </select>
 <!--受講生情報の新規登録-->
     <insert id="registerStudent" useGeneratedKeys="true" keyProperty="id">
