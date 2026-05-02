@@ -951,6 +951,22 @@ class StudentConverterTest {
         assertThat(actual).isEmpty();
     }
 
+    @Test
+    @DisplayName("受講生詳細一覧に申込状況がnullの受講コースが含まれていても申込状況で検索できる")
+    void filterByStatus_studentCourseStatusIsNull_returnList() {
+        List<StudentDetail> studentDetails = createStudentDetailList();
+
+        studentDetails.get(0).getStudentCourseList().get(0).setStudentCourseStatus(null);
+        String searchStatus = "仮申込";
+
+        List<StudentDetail> actual = converter.filterByStatus(studentDetails, searchStatus);
+
+        assertThat(actual).hasSize(1);
+        assertThat(actual.get(0).getStudent().getId()).isEqualTo(studentDetails.get(0).getStudent().getId());
+        assertThat(actual.get(0).getStudentCourseList()).hasSize(1);
+        assertThat(actual.get(0).getStudentCourseList().get(0).getCourseName()).isEqualTo("テストコース2");
+    }
+
 
     /**
      * テストに使用する受講生を作成するメソッド

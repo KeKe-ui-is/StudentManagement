@@ -110,7 +110,10 @@ public class StudentConverter {
         List<StudentDetail> studentDetails = new ArrayList<>();
         studentDetailList.forEach(studentDetail -> {
             List<StudentCourse> studentCourseList = studentDetail.getStudentCourseList().stream()
-                    .filter(studentCourse -> studentCourse.getStudentCourseStatus().getStatus().equals(status))
+                    .filter(studentCourse ->
+                            studentCourse.getStudentCourseStatus() != null &&
+                                    studentCourse.getStudentCourseStatus().getStatus() != null &&
+                                    studentCourse.getStudentCourseStatus().getStatus().equals(status))
                     .toList();
             StudentDetail addDetail = new StudentDetail(studentDetail.getStudent(),studentCourseList);
             if (!studentCourseList.isEmpty()){
