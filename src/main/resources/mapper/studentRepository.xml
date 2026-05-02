@@ -1,44 +1,98 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace ="raisetech.student.management.repository.StudentRepository">
-<!--    受講生の全件検索-->
-    <select id ="search" resultType="raisetech.student.management.data.Student">
+<mapper namespace="raisetech.student.management.repository.StudentRepository">
+    <!--    受講生の全件検索-->
+    <select id="search" resultType="raisetech.student.management.data.Student">
         SELECT *
         FROM students
     </select>
-<!--    受講生コース情報の全件検索-->
-    <select id ="searchStudentCourseList" resultType="raisetech.student.management.data.StudentCourse">
+    <!--    受講生コース情報の全件検索-->
+    <select id="searchStudentCourseList" resultType="raisetech.student.management.data.StudentCourse">
         SELECT * FROM students_courses
     </select>
-<!--   受講生の単体検索-->
-    <select id ="searchStudent" resultType="raisetech.student.management.data.Student">
+    <!--    申込状況の全件検索-->
+    <select id="searchStatusList" resultType="raisetech.student.management.data.StudentCourseStatus">
+        SELECT * FROM student_course_status;
+    </select>
+    <!--   受講生の単体検索-->
+    <select id="searchStudent" resultType="raisetech.student.management.data.Student">
         SELECT *
         FROM students
         WHERE id=#{id}
     </select>
-<!--    受講生コース情報の検索-->
+    <!--    受講生を複数条件で検索-->
+    <select id="searchStudentMultipleCondition" resultType="raisetech.student.management.data.Student">
+        SELECT *
+        FROM students
+        <where>
+            deleted = 0
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="kanaName != null and kanaName != ''">
+                AND kana_name LIKE CONCAT('%', #{kanaName}, '%')
+            </if>
+            <if test="nickname != null and nickname != ''">
+                AND nickname LIKE CONCAT('%', #{nickname}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND email LIKE CONCAT('%', #{email}, '%')
+            </if>
+            <if test="area != null and area != ''">
+                AND area LIKE CONCAT('%', #{area}, '%')
+            </if>
+            <if test="age != null">
+                AND age = #{age}
+            </if>
+            <if test="maxAge != null">
+                AND age &lt;= #{maxAge}
+            </if>
+            <if test="minAge != null">
+                AND age &gt;= #{minAge}
+            </if>
+            <if test="sex != null and sex !=''">
+                AND sex = #{sex}
+            </if>
+        </where>
+    </select>
+
+    <!--    受講生コース情報の検索-->
     <select id="searchStudentCourse" resultType="raisetech.student.management.data.StudentCourse">
         SELECT *
         FROM students_courses
         WHERE student_id = #{id}
         ORDER BY id
     </select>
-<!--受講生情報の新規登録-->
+    <!--    申込状況の単体検索-->
+    <select id="searchStudentCourseStatus" resultType="raisetech.student.management.data.StudentCourseStatus">
+        SELECT * FROM student_course_status WHERE student_course_id = #{id}
+    </select>
+    <!--受講生情報の新規登録-->
     <insert id="registerStudent" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO students
         (name,kana_name,nickname,email,area,age,sex,remark,deleted)
         VALUES
         (#{name},#{kanaName},#{nickname},#{email},#{area},#{age},#{sex},#{remark},false)
     </insert>
-<!--    受講生コース情報の新規登録-->
+    <!--    受講生コース情報の新規登録-->
     <insert id="registerStudentCourse" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO students_courses
         (student_id, course_name, course_start_at, course_end_at)
         VALUES
         (#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})
     </insert>
-<!--    受講生情報の更新-->
-    <update id="updateStudent" >
+    <!--    申込状況の新規登録　-->
+    <insert id="registerStudentCourseStatus" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student_course_status
+        (student_course_id, status)
+        VALUES
+        (#{studentCourseId}, #{status})
+    </insert>
+    <!--    受講生情報の更新-->
+    <update id="updateStudent">
         UPDATE students
         SET name=#{name}, kana_name=#{kanaName},
         nickname=#{nickname}, email=#{email},
@@ -48,29 +102,17 @@
         WHERE id=#{id}
     </update>
     <!--    受講生コース情報の更新-->
-    <update id="updateStudentCourse" >
+    <update id="updateStudentCourse">
         UPDATE students_courses
         SET course_name=#{courseName}
         WHERE student_id=#{studentId}
         AND id=#{id}
     </update>
-
-<!--    MyBatisのドキュメントより
-  <insert
-  id="insertAuthor"
-  parameterType="domain.blog.Author"
-  flushCache="true"
-  statementType="PREPARED"
-  keyProperty=""
-  keyColumn=""
-  useGeneratedKeys=""
-  timeout="20">
-
-<update
-  id="updateAuthor"
-  parameterType="domain.blog.Author"
-  flushCache="true"
-  statementType="PREPARED"
-  timeout="20">
--->
+    <!--   申込状況の更新 -->
+    <update id="updateStudentCourseStatus">
+        UPDATE student_course_status
+        SET status = #{status}
+        WHERE student_course_id = #{studentCourseId}
+        AND id = #{id}
+    </update>
 </mapper>

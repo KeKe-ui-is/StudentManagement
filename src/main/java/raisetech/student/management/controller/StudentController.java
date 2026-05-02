@@ -8,11 +8,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import org.apache.ibatis.annotations.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.data.StudentSearchCondition;
 import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.exception.TestException;
 import raisetech.student.management.exception.ViolationErrorResponse;
@@ -60,6 +62,27 @@ public class StudentController {
     }
 
     /**
+     * 受講生コース情報一覧検索機能です。
+     * 全件検索を行うので条件指定は不要です。
+     * 以上の受付を行うControllerです。
+     * @return 受講生コース情報(全件数）
+     */
+    @Operation(
+            summary = "一覧検索",
+            description = "受講生コース情報の一覧を検索します",
+            operationId = "getStudentCourseList",
+            tags = {"SearchStudent"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "検索成功"),
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー")
+    })
+    @GetMapping("/courseList")
+    public List<StudentCourse> getStudentCourseList(){
+        return service.searchStudentCourseList();
+    }
+
+    /**
      * 受講生検索です。
      * idに紐づく受講生と受講コースの情報を取得します。
      *
@@ -85,14 +108,42 @@ public class StudentController {
     public StudentDetail getStudent(
             @Parameter(description = "受講生ID 1～3文字で入力", required = true)
             @PathVariable
-//            @NotBlank(message = "{student.id.required}")
-//            @Size(min = 1, max = 3, message = "{student.id.size}")
             @Min(value = 0, message = "{student.id.size}")
             @Max(value = 999, message = "{student.id.size}")
-//            @Pattern(regexp = "^\\d+$", message = "{student.id.pattern}")
             @NotNull
             Integer id) {
         return service.searchStudent(id);
+    }
+    //受講生の複数の条件を用いた検索
+    @Operation(
+            summary = "受講生複数条件検索",
+            description = "名前や地域など複数条件を指定して検索します。",
+            tags = {"SearchStudent"}
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "検索成功",
+                    content = @Content(schema = @Schema(implementation = Student.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "入力値が不正です",
+                    content = @Content(schema = @Schema(implementation = ViolationErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "サーバー内部エラー"
+            )
+    })
+    /**
+     * GETメソッドで検索条件を受け取り受講生の検索を行う
+     * @param studentSearchCondition 受講生検索条件
+     * @return 受講生
+     */
+    @PostMapping("/studentMultiple")
+    public List<StudentDetail> searchStudentMultiple(@RequestBody @Valid StudentSearchCondition studentSearchCondition){
+        return service.searchStudentMultipleCondition(studentSearchCondition);
     }
 
     /**
