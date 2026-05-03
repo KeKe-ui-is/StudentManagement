@@ -14,3 +14,13 @@ INSERT INTO students_courses (student_id, course_name, course_start_at, course_e
     (1, 'AIプログラミングコース',  '2026-04-24 10:00:00', '2026-10-24 18:00:00'),
     (4,'Java応用コース',         '2026-04-25 10:00:00', '2026-10-25 18:00:00'),
     (2,'Python基礎コース',       '2026-04-26 10:00:00', '2026-10-26 18:00:00');
+
+INSERT INTO student_course_status(student_course_id,status) VALUES
+    (1,'仮申込'),
+    (2,'本申込'),
+    (3,'受講中'),
+    (4,'受講終了'),
+    (5,'受講中'),
+    (6,'仮申込'),
+    (7,'本申込'),
+    (8,'受講中');

@@ -6,12 +6,15 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.data.StudentCourseStatus;
+import raisetech.student.management.data.StudentSearchCondition;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @MybatisTest
@@ -30,6 +33,13 @@ class StudentRepositoryTest {
     @DisplayName("受講生コース情報の全件検索が行えること")
     void searchStudentCourseList_studentCourseList(){
         List<StudentCourse> actual = sut.searchStudentCourseList();
+        assertThat(actual).hasSize(8);
+    }
+
+    @Test
+    @DisplayName("申込状況の全件検索が行えること")
+    void searchStatusList_studentCourseStatusList(){
+        List<StudentCourseStatus> actual = sut.searchStatusList();
         assertThat(actual).hasSize(8);
     }
 
@@ -99,6 +109,30 @@ class StudentRepositoryTest {
     }
 
     @Test
+    @DisplayName("指定した受講コースidに合致する申込状況の検索が行えること")
+    void searchStudentCourseStatus_returnList(){
+        Integer id = 1;
+        StudentCourseStatus expected = new StudentCourseStatus();
+        expected.setId(1);
+        expected.setStudentCourseId(1);
+        expected.setStatus("仮申込");
+
+        StudentCourseStatus actual = sut.searchStudentCourseStatus(id);
+
+        assertThat(actual.getId()).isEqualTo(expected.getId());
+        assertThat(actual.getStudentCourseId()).isEqualTo(expected.getStudentCourseId());
+        assertThat(actual.getStatus()).isEqualTo(expected.getStatus());
+    }
+
+    @Test
+    @DisplayName("存在しない受講コースidを指定すると申込状況が空で返ること")
+    void searchStudentCourseStatus_notFound_returnEmpty() {
+        StudentCourseStatus actual = sut.searchStudentCourseStatus(999);
+
+        assertThat(actual).isNull();
+    }
+
+    @Test
     @DisplayName("受講生の登録が行えること")
     void registerStudent_test(){
         Student student = createStudent();
@@ -113,6 +147,15 @@ class StudentRepositoryTest {
         StudentCourse studentCourse = createStudentCourse();
         sut.registerStudentCourse(studentCourse);
         List<StudentCourse> actual = sut.searchStudentCourseList();
+        assertThat(actual).hasSize(9);
+    }
+
+    @Test
+    @DisplayName("申込状況の登録が行えること")
+    void registerStudentCourseStatus_test(){
+        StudentCourseStatus studentCourseStatus = createStudentCourseStatus();
+        sut.registerStudentCourseStatus(studentCourseStatus);
+        List<StudentCourseStatus> actual = sut.searchStatusList();
         assertThat(actual).hasSize(9);
     }
 
@@ -142,6 +185,107 @@ class StudentRepositoryTest {
 
         assertThat(actual.get(0).getCourseName()).isEqualTo(expected.getCourseName());
         assertThat(actual).hasSize(3);
+    }
+
+    @Test
+    @DisplayName("申込状況の更新が行えること")
+    void updateStudentCourseStatus_test(){
+        StudentCourseStatus expected = new StudentCourseStatus(1,1,"本申込");
+        sut.updateStudentCourseStatus(expected);
+        StudentCourseStatus actual = sut.searchStudentCourseStatus(expected.getStudentCourseId());
+
+        assertThat(actual.getId()).isEqualTo(expected.getId());
+        assertThat(actual.getStudentCourseId()).isEqualTo(expected.getStudentCourseId());
+        assertThat(actual.getStatus()).isEqualTo(expected.getStatus());
+
+    }
+
+    @Test
+    @DisplayName("受講生の複数条件で検索する際何も指定しなかった時受講生一覧が返る")
+    void searchStudentMultipleCondition_conditionIsEmpty_returnList(){
+        StudentSearchCondition studentSearchCondition = new StudentSearchCondition();
+        List<Student> actual = sut.searchStudentMultipleCondition(studentSearchCondition);
+
+        assertThat(actual).hasSize(5);
+    }
+
+    @Test
+    @DisplayName("受講生の複数条件を指定して検索ができる")
+    void searchStudentMultipleCondition_setMultipleCondition_returnList(){
+        StudentSearchCondition studentSearchCondition = new StudentSearchCondition();
+        studentSearchCondition.setName("中村悠斗");
+        studentSearchCondition.setKanaName("ナカムラユウト");
+        studentSearchCondition.setNickname("ユウト");
+        studentSearchCondition.setEmail("yuto.nakamura@example.com");
+        studentSearchCondition.setArea("神奈川");
+        studentSearchCondition.setAge(26);
+        studentSearchCondition.setSex("男性");
+
+        List<Student> actual = sut.searchStudentMultipleCondition(studentSearchCondition);
+
+        assertThat(actual).hasSize(1);
+        Student actualStudent = actual.get(0);
+        assertThat(actualStudent.getId()).isEqualTo(1);
+        assertThat(actualStudent.getName()).isEqualTo("中村悠斗");
+        assertThat(actualStudent.getKanaName()).isEqualTo("ナカムラユウト");
+        assertThat(actualStudent.getNickname()).isEqualTo("ユウト");
+        assertThat(actualStudent.getEmail()).isEqualTo("yuto.nakamura@example.com");
+        assertThat(actualStudent.getArea()).isEqualTo("神奈川");
+        assertThat(actualStudent.getAge()).isEqualTo(26);
+        assertThat(actualStudent.getSex()).isEqualTo("男性");
+    }
+
+    @Test
+    @DisplayName("受講生の複数条件を指定して検索する際部分検索ができる")
+    void searchStudentMultipleCondition_partialSearch_returnList(){
+        StudentSearchCondition studentSearchCondition = new StudentSearchCondition();
+        studentSearchCondition.setName("中村");
+        studentSearchCondition.setKanaName("ユウト");
+        studentSearchCondition.setNickname("ユ");
+        studentSearchCondition.setEmail("nakamura@example.com");
+        studentSearchCondition.setArea("奈川");
+
+        List<Student> actual = sut.searchStudentMultipleCondition(studentSearchCondition);
+
+        assertThat(actual).hasSize(1);
+        Student actualStudent = actual.get(0);
+        assertThat(actualStudent.getId()).isEqualTo(1);
+        assertThat(actualStudent.getName()).isEqualTo("中村悠斗");
+        assertThat(actualStudent.getKanaName()).isEqualTo("ナカムラユウト");
+        assertThat(actualStudent.getNickname()).isEqualTo("ユウト");
+        assertThat(actualStudent.getEmail()).isEqualTo("yuto.nakamura@example.com");
+        assertThat(actualStudent.getArea()).isEqualTo("神奈川");
+        assertThat(actualStudent.getAge()).isEqualTo(26);
+        assertThat(actualStudent.getSex()).isEqualTo("男性");
+    }
+
+    @Test
+    @DisplayName("存在しない受講生の複数条件を指定して検索ができる")
+    void searchStudentMultipleCondition_doesNotExist_returnList(){
+        StudentSearchCondition studentSearchCondition = new StudentSearchCondition();
+        studentSearchCondition.setName("テスト太郎");
+        studentSearchCondition.setKanaName("テストタロウ");
+        studentSearchCondition.setNickname("テスタロウ");
+        studentSearchCondition.setEmail("test@example.com");
+        studentSearchCondition.setArea("テスト");
+        studentSearchCondition.setAge(20);
+        studentSearchCondition.setSex("男性");
+
+        List<Student> actual = sut.searchStudentMultipleCondition(studentSearchCondition);
+
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    @DisplayName("受講生を年齢で範囲を指定して検索ができる")
+    void searchStudentMultipleCondition_setMaxAgeAndMinAge_returnList(){
+        StudentSearchCondition studentSearchCondition = new StudentSearchCondition();
+        studentSearchCondition.setMaxAge(30);
+        studentSearchCondition.setMinAge(20);
+
+        List<Student> actual = sut.searchStudentMultipleCondition(studentSearchCondition);
+
+        assertThat(actual).hasSize(4);
     }
 
 
@@ -174,6 +318,17 @@ class StudentRepositoryTest {
         studentCourse.setCourseStartAt(stringToLocalDateTime("2026-04-01 10:00:00"));
         studentCourse.setCourseEndAt(stringToLocalDateTime("2026-10-01 18:00:00"));
         return studentCourse;
+    }
+
+    /**
+     * テストに使用する申込状況を生成するメソッド
+     * @return StudentCourseStatus
+     */
+    private static StudentCourseStatus createStudentCourseStatus(){
+        StudentCourseStatus studentCourseStatus = new StudentCourseStatus();
+        studentCourseStatus.setStudentCourseId(9);
+        studentCourseStatus.setStatus("仮申込");
+        return studentCourseStatus;
     }
 
     /**

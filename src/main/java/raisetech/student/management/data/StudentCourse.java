@@ -1,6 +1,7 @@
 package raisetech.student.management.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
@@ -25,4 +26,7 @@ public class StudentCourse {
     private LocalDateTime courseStartAt;
     @Schema(description = "受講修了予定日", example = "2027-04-01T10:00:00")
     private LocalDateTime courseEndAt;
+    @Schema(description = "受講状況")
+    @Valid
+    private StudentCourseStatus studentCourseStatus;
 }
